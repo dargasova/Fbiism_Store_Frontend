@@ -1,13 +1,21 @@
-// src/pages/ContactPage.js
+// src/components/Footer.js
 import React from 'react';
-import {Container, Typography, Box, Button} from '@mui/material';
+import { Container, Typography, Box, Link } from '@mui/material';
 
-const ContactPage = () => {
+const Footer = () => {
     return (
-        <Container>
-            <Box sx={{marginTop: '40px'}}>
+        <Box
+            component="footer"
+            sx={{
+                backgroundColor: '#f1f1f1',
+                padding: '60px 0', // Увеличил расстояние до 60px
+                marginTop: 'auto'
+            }}
+            id="contacts" // Добавлен id
+        >
+            <Container>
                 <Typography
-                    variant="h4"
+                    variant="h6"
                     gutterBottom
                     style={{
                         fontFamily: 'StyreneA, Arial, sans-serif',
@@ -27,7 +35,7 @@ const ContactPage = () => {
                         marginBottom: '20px'
                     }}
                 >
-                    Адрес: ул. Примерная, д. 1, Москва, Россия
+                    Адрес: Каширское ш., д. 31, Москва, Россия
                 </Typography>
                 <Typography
                     variant="body1"
@@ -39,7 +47,7 @@ const ContactPage = () => {
                         marginBottom: '20px'
                     }}
                 >
-                    Телефон: +7 (123) 456-78-90
+                    Телефон: +7 (928) 330-46-76
                 </Typography>
                 <Typography
                     variant="body1"
@@ -51,24 +59,11 @@ const ContactPage = () => {
                         marginBottom: '20px'
                     }}
                 >
-                    Email: <a href="mailto:info@fbiismstore.com"
-                              style={{color: '#760073', textDecoration: 'none'}}>info@fbiismstore.com</a>
+                    Email: <Link href="mailto:info@fbiismstore.com" style={{ color: '#760073', textDecoration: 'none' }}>info@fbiismstore.com</Link>
                 </Typography>
-                <Button
-                    variant="contained"
-                    style={{
-                        backgroundColor: '#760073',
-                        color: 'white',
-                        fontFamily: 'StyreneA, Arial, sans-serif',
-                        marginTop: '20px'
-                    }}
-                    href="mailto:info@fbiismstore.com"
-                >
-                    Связаться с нами
-                </Button>
-            </Box>
-        </Container>
+            </Container>
+        </Box>
     );
 };
 
-export default ContactPage;
+export default Footer;

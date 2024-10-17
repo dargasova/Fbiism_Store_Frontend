@@ -1,35 +1,18 @@
+/* src/index.css */
+
 html {
     overflow-y: scroll;
 }
 
-
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f0f0f0;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #760073;
-    border-radius: 10px;
-    border: 3px solid #f0f0f0;
-}
-
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #760073 #f0f0f0;
-}
-
+/* Общие стили для всех страниц */
 body {
     margin: 0;
     font-family: 'StyreneA', Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased; /* Улучшение рендеринга шрифтов для WebKit-браузеров */
+    -moz-osx-font-smoothing: grayscale; /* Улучшение рендеринга шрифтов для Firefox на macOS */
 }
 
+/* Стили для кода (если используется) */
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

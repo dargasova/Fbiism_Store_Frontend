@@ -106,7 +106,7 @@ const ProductCard = ({product}) => {
                         variant="h6"
                         sx={{
                             fontWeight: 700,
-                            fontSize: '18px',
+                            fontSize: '20px',
                             marginBottom: '8px',
                             color: '#760073',
                             overflow: 'hidden',
@@ -116,7 +116,7 @@ const ProductCard = ({product}) => {
                     >
                         {product.name}
                     </Typography>
-                    <Typography color="textSecondary" sx={{fontWeight: 500, fontSize: '16px'}}>
+                    <Typography color='#282828' sx={{fontWeight: 560, fontSize: '20px'}}>
                         {formattedPrice}
                     </Typography>
                 </CardContent>

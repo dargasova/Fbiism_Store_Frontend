@@ -10,11 +10,12 @@ import {
     Tooltip,
     Container
 } from '@mui/material';
-import {styled} from '@mui/system';
+import { styled } from '@mui/system';
+import { HashLink } from 'react-router-hash-link';
 import shoppingBagIcon from '../images/shopping-bag-icon.png';
 import logoImage from '../images/logo_fbiism.png';
 
-const CustomFab = styled(Fab)(({theme}) => ({
+const CustomFab = styled(Fab)(({ theme }) => ({
     transition: 'transform 0.3s ease-in-out',
     backgroundColor: '#760073',
     '&:hover': {
@@ -23,9 +24,9 @@ const CustomFab = styled(Fab)(({theme}) => ({
     },
 }));
 
-const CustomTooltip = styled(({className, ...props}) => (
-    <Tooltip {...props} classes={{popper: className}}/>
-))(({theme}) => ({
+const CustomTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
     [`& .MuiTooltip-tooltip`]: {
         backgroundColor: '#000',
         color: '#fff',
@@ -33,15 +34,21 @@ const CustomTooltip = styled(({className, ...props}) => (
         padding: '10px 20px',
         borderRadius: '5px',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+        fontStyle: 'italic',
+        fontWeight: 'bold',
     },
     [`& .MuiTooltip-arrow`]: {
         color: '#000',
     },
 }));
 
-const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
+const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
     const totalQuantity = cart.reduce((acc, product) => acc + product.quantity, 0);
     const totalPrice = cart.reduce((total, product) => total + product.price * product.quantity, 0);
+
+    const handleLogoClick = () => {
+        window.location.href = '/';
+    };
 
     return (
         <>
@@ -53,7 +60,7 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                     height: '100px',
                 }}
             >
-                <Container maxWidth="lg" sx={{height: '100%', display: 'flex', alignItems: 'center'}}>
+                <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                     <Toolbar
                         disableGutters
                         sx={{
@@ -68,8 +75,11 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                         }}
                     >
                         {/* Логотип и название магазина */}
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
-                            <img src={logoImage} alt="Logo" style={{height: '40px', marginRight: '8px'}}/>
+                        <Box
+                            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                            onClick={handleLogoClick}  // Добавляем обработчик нажатия
+                        >
+                            <img src={logoImage} alt="Logo" style={{ height: '40px', marginRight: '8px' }} />
                             <Typography
                                 variant="h6"
                                 sx={{
@@ -84,10 +94,12 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                             </Typography>
                         </Box>
 
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        {/* Навигационные ссылки */}
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Button
-                                component="a"
-                                href="/"
+                                component={HashLink}
+                                smooth
+                                to="/#"
                                 variant="text"
                                 disableRipple
                                 sx={{
@@ -108,8 +120,9 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                             </Button>
 
                             <Button
-                                component="a"
-                                href="/catalog"
+                                component={HashLink}
+                                smooth
+                                to="/catalog"
                                 variant="text"
                                 disableRipple
                                 sx={{
@@ -130,8 +143,9 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                             </Button>
 
                             <Button
-                                component="a"
-                                href="/contact"
+                                component={HashLink}
+                                smooth
+                                to="/#about"
                                 variant="text"
                                 disableRipple
                                 sx={{
@@ -139,6 +153,53 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                                     fontWeight: 400,
                                     textTransform: 'none',
                                     color: '#760073',
+                                    marginRight: '20px',
+                                    fontSize: '16px',
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        color: '#FFA500',
+                                    },
+                                }}
+                            >
+                                О нас
+                            </Button>
+
+                            <Button
+                                component={HashLink}
+                                smooth
+                                to="/#delivery"
+                                variant="text"
+                                disableRipple
+                                sx={{
+                                    fontFamily: 'StyreneA, Arial, sans-serif',
+                                    fontWeight: 400,
+                                    textTransform: 'none',
+                                    color: '#760073',
+                                    marginRight: '20px',
+                                    fontSize: '16px',
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        color: '#FFA500',
+                                    },
+                                }}
+                            >
+                                Доставка
+                            </Button>
+
+                            <Button
+                                component={HashLink}
+                                smooth
+                                to="/#contacts"
+                                variant="text"
+                                disableRipple
+                                sx={{
+                                    fontFamily: 'StyreneA, Arial, sans-serif',
+                                    fontWeight: 400,
+                                    textTransform: 'none',
+                                    color: '#760073',
+                                    marginRight: '20px',
                                     fontSize: '16px',
                                     backgroundColor: 'transparent',
                                     '&:hover': {
@@ -151,7 +212,8 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                             </Button>
                         </Box>
 
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        {/* Кнопка "Задать вопрос" */}
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Button
                                 variant="contained"
                                 onClick={onOpenAskQuestion}
@@ -176,45 +238,57 @@ const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
                 </Container>
             </AppBar>
 
-            {totalQuantity > 0 && (
-                <CustomTooltip
-                    title={`= ${totalPrice.toLocaleString()} ₽`}
-                    arrow
-                    placement="left"
-                    enterTouchDelay={0}
-                >
-                    <CustomFab
-                        color="primary"
-                        aria-label="cart"
-                        sx={{
-                            position: 'fixed',
-                            top: '80px',
-                            right: '20px',
-                            width: '80px',
-                            height: '80px',
-                        }}
-                        onClick={onOpenCart}
+            {/* Отступ для фиксированной Navbar */}
+            <Toolbar />
+
+            <Box
+                sx={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '0',
+                }}
+            >
+                {totalQuantity > 0 && (
+                    <CustomTooltip
+                        title={`= ${totalPrice.toLocaleString()} ₽`}
+                        arrow
+                        placement="left"
+                        enterTouchDelay={0}
                     >
-                        <Badge
-                            badgeContent={totalQuantity}
+                        <CustomFab
                             color="primary"
+                            aria-label="cart"
                             sx={{
-                                '& .MuiBadge-badge': {
-                                    backgroundColor: '#000',
-                                    color: '#fff',
-                                    fontSize: '12px',
-                                },
+                                position: 'absolute',
+                                top: '-5px',
+                                right: '20px',
+                                width: '80px',
+                                height: '80px',
+                                zIndex: 10,
                             }}
+                            onClick={onOpenCart}
                         >
-                            <img
-                                src={shoppingBagIcon}
-                                alt="Корзина"
-                                style={{width: '45px', height: '45px'}}
-                            />
-                        </Badge>
-                    </CustomFab>
-                </CustomTooltip>
-            )}
+                            <Badge
+                                badgeContent={totalQuantity}
+                                color="primary"
+                                sx={{
+                                    '& .MuiBadge-badge': {
+                                        backgroundColor: '#000',
+                                        color: '#fff',
+                                        fontSize: '12px',
+                                    },
+                                }}
+                            >
+                                <img
+                                    src={shoppingBagIcon}
+                                    alt="Корзина"
+                                    style={{ width: '45px', height: '45px' }}
+                                />
+                            </Badge>
+                        </CustomFab>
+                    </CustomTooltip>
+                )}
+            </Box>
         </>
     );
 };
