@@ -55,16 +55,16 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
             <AppBar
                 position="static"
                 sx={{
-                    backgroundColor: 'transparent',
+                    backgroundColor: '#ebebeb',
                     boxShadow: 'none',
                     height: '100px',
                 }}
             >
-                <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', alignItems: 'center'}}>
                     <Toolbar
                         disableGutters
                         sx={{
-                            backgroundColor: '#d9dce1',
+                            backgroundColor: '#fff',
                             borderRadius: '40px',
                             height: '60px',
                             width: '100%',
@@ -77,7 +77,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                         {/* Логотип и название магазина */}
                         <Box
                             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                            onClick={handleLogoClick}  // Добавляем обработчик нажатия
+                            onClick={handleLogoClick}
                         >
                             <img src={logoImage} alt="Logo" style={{ height: '40px', marginRight: '8px' }} />
                             <Typography
@@ -238,8 +238,8 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                 </Container>
             </AppBar>
 
-            {/* Отступ для фиксированной Navbar */}
-            <Toolbar />
+            {/* Убрали отступ для фиксированной Navbar */}
+            {/* <Toolbar /> */}
 
             <Box
                 sx={{
@@ -260,7 +260,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                             aria-label="cart"
                             sx={{
                                 position: 'absolute',
-                                top: '-5px',
+                                top: '-45px',
                                 right: '20px',
                                 width: '80px',
                                 height: '80px',

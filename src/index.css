@@ -10,6 +10,7 @@ body {
     font-family: 'StyreneA', Arial, sans-serif;
     -webkit-font-smoothing: antialiased; /* Улучшение рендеринга шрифтов для WebKit-браузеров */
     -moz-osx-font-smoothing: grayscale; /* Улучшение рендеринга шрифтов для Firefox на macOS */
+
 }
 
 /* Стили для кода (если используется) */
