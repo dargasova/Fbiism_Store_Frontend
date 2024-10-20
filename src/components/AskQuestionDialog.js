@@ -1,8 +1,44 @@
-import React, {useState} from 'react';
-import {Typography, TextField, Button, Box, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
+import React, { useState } from 'react';
+import { TextField, Button, Box, Dialog, DialogContent, DialogTitle, DialogActions, Typography } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-const AskQuestionDialog = ({open, onClose}) => {
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#760073', // Корпоративный цвет для фокуса
+        },
+    },
+    components: {
+        MuiTextField: {
+            defaultProps: {
+                InputLabelProps: {
+                    shrink: true, // Установка для поднятия лейбла
+                },
+            },
+        },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-focused': {
+                        color: '#760073', // Цвет заголовка при фокусе
+                    },
+                },
+            },
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#760073', // Цвет рамки при фокусе
+                    },
+                },
+            },
+        },
+    },
+});
+
+const AskQuestionDialog = ({ open, onClose }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [question, setQuestion] = useState('');
@@ -17,12 +53,12 @@ const AskQuestionDialog = ({open, onClose}) => {
             return;
         }
 
-        const formData = {name, email, question};
+        const formData = { name, email, question };
 
         try {
             const response = await fetch('http://localhost:5000/send-question', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
 
@@ -47,7 +83,7 @@ const AskQuestionDialog = ({open, onClose}) => {
     };
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <Dialog
                 open={open}
                 onClose={onClose}
@@ -61,15 +97,29 @@ const AskQuestionDialog = ({open, onClose}) => {
                 }}
             >
                 <DialogTitle
-                    style={{
-                        fontFamily: 'StyreneA, Arial, sans-serif',
+                    sx={{
                         fontWeight: 700,
                         textAlign: 'center',
+                        fontSize: { xs: '38px', md: '46px' },
+                        color: '#760073',
                     }}
                 >
                     Задать вопрос
                 </DialogTitle>
+
                 <DialogContent>
+                    <Typography
+                        variant="body1"
+                        style={{
+                            textAlign: 'center',
+                            fontWeight: 400,
+                            marginBottom: '20px',
+                            fontSize: '20px',
+                        }}
+                    >
+                        Ваше обращение будет отправлено на нашу почту, и мы непременно свяжемся с вами в ближайшее время!
+                    </Typography>
+
                     {error && (
                         <Box
                             sx={{
@@ -82,7 +132,6 @@ const AskQuestionDialog = ({open, onClose}) => {
                             <Typography
                                 color="error"
                                 style={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
                                     fontWeight: 400,
                                 }}
                             >
@@ -98,14 +147,9 @@ const AskQuestionDialog = ({open, onClose}) => {
                             margin="normal"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            InputProps={{
-                                style: {
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    borderRadius: '8px',
-                                },
-                            }}
+                            required
                         />
+
                         <TextField
                             label="Email"
                             variant="outlined"
@@ -113,14 +157,9 @@ const AskQuestionDialog = ({open, onClose}) => {
                             margin="normal"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            InputProps={{
-                                style: {
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    borderRadius: '8px',
-                                },
-                            }}
+                            required
                         />
+
                         <TextField
                             label="Ваш вопрос"
                             variant="outlined"
@@ -130,14 +169,9 @@ const AskQuestionDialog = ({open, onClose}) => {
                             margin="normal"
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
-                            InputProps={{
-                                style: {
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    borderRadius: '8px',
-                                },
-                            }}
+                            required
                         />
+
                         <Button
                             type="submit"
                             variant="contained"
@@ -145,11 +179,11 @@ const AskQuestionDialog = ({open, onClose}) => {
                             sx={{
                                 backgroundColor: '#760073',
                                 color: 'white',
-                                fontFamily: 'StyreneA, Arial, sans-serif',
                                 fontWeight: 500,
                                 marginTop: '20px',
                                 padding: '10px 0',
                                 borderRadius: '30px',
+                                fontSize: { xs: '8px', md: '16px' },
                                 '&:hover': {
                                     backgroundColor: '#59005a',
                                 },
@@ -181,50 +215,52 @@ const AskQuestionDialog = ({open, onClose}) => {
                         justifyContent: 'center',
                     }}
                 >
-                    <CheckCircleOutlineIcon style={{fontSize: '40px', marginRight: '10px'}}/>
+                    <CheckCircleOutlineIcon sx={{ fontSize: 40, mr: 1 }} />
                     <DialogTitle
-                        style={{
+                        sx={{
                             color: 'white',
                             fontWeight: 700,
-                            fontFamily: 'StyreneA, Arial, sans-serif',
                             textAlign: 'center',
                         }}
                     >
                         Сообщение отправлено!
                     </DialogTitle>
                 </Box>
+
                 <DialogContent>
                     <Typography
                         variant="body1"
-                        style={{
+                        sx={{
                             textAlign: 'center',
-                            fontFamily: 'StyreneA, Arial, sans-serif',
                             fontWeight: 400,
-                            marginBottom: '20px',
+                            mb: 2,
                         }}
                     >
                         Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.
                     </Typography>
                 </DialogContent>
-                <DialogActions style={{justifyContent: 'center'}}>
+
+                <DialogActions sx={{ justifyContent: 'center' }}>
                     <Button
                         onClick={handleCloseSuccessDialog}
                         variant="contained"
-                        style={{
+                        sx={{
                             backgroundColor: '#760073',
                             color: 'white',
-                            fontFamily: 'StyreneA, Arial, sans-serif',
                             fontWeight: 500,
                             textTransform: 'none',
                             padding: '8px 30px',
                             borderRadius: '30px',
+                            '&:hover': {
+                                backgroundColor: '#59005a',
+                            },
                         }}
                     >
                         Закрыть
                     </Button>
                 </DialogActions>
             </Dialog>
-        </>
+        </ThemeProvider>
     );
 };
 

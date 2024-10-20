@@ -10,23 +10,66 @@ import {
     Tooltip,
     Container
 } from '@mui/material';
-import { styled } from '@mui/system';
-import { HashLink } from 'react-router-hash-link';
+import {styled} from '@mui/system';
+import {HashLink} from 'react-router-hash-link';
 import shoppingBagIcon from '../images/shopping-bag-icon.png';
 import logoImage from '../images/logo_fbiism.png';
+import { Link, useLocation } from 'react-router-dom';  // Добавили useLocation
 
-const CustomFab = styled(Fab)(({ theme }) => ({
+const CustomFab = styled(Fab)(({theme}) => ({
     transition: 'transform 0.3s ease-in-out',
     backgroundColor: '#760073',
     '&:hover': {
         transform: 'scale(1.1)',
         backgroundColor: '#760073',
     },
+
 }));
 
-const CustomTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
+const scrollToSection = (id) => {
+    const section = document.querySelector(id);
+    if (section) {
+        const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
+        const offset = (window.innerHeight - section.clientHeight) / 2;
+        const targetPosition = sectionPosition - offset;
+
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 1000; // Увеличили длительность до 1000 мс для более плавного скроллинга
+        let start = null;
+
+        const step = (timestamp) => {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            const currentPosition = easeInOutQuad(progress, startPosition, distance, duration);
+
+            window.scrollTo(0, currentPosition);
+
+            if (progress < duration) {
+                requestAnimationFrame(step);
+            }
+        };
+
+        requestAnimationFrame(step);
+    }
+};
+
+// Функция для ещё более плавной анимации (ease-in-out, но мягче)
+const easeInOutQuad = (t, b, c, d) => {
+    t /= d / 2;
+    if (t < 1) return c / 2 * t * t + b;
+    t--;
+    return -c / 2 * (t * (t - 2) - 1) + b;
+};
+
+
+
+
+
+
+const CustomTooltip = styled(({className, ...props}) => (
+    <Tooltip {...props} classes={{popper: className}}/>
+))(({theme}) => ({
     [`& .MuiTooltip-tooltip`]: {
         backgroundColor: '#000',
         color: '#fff',
@@ -43,6 +86,8 @@ const CustomTooltip = styled(({ className, ...props }) => (
 }));
 
 const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
+    const location = useLocation(); // Получаем текущий путь
+    const isCheckoutPage = location.pathname === '/checkout'; // Проверяем, находимся ли мы на странице оформления заказа
     const totalQuantity = cart.reduce((acc, product) => acc + product.quantity, 0);
     const totalPrice = cart.reduce((total, product) => total + product.price * product.quantity, 0);
 
@@ -60,7 +105,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                     height: '100px',
                 }}
             >
-                <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', alignItems: 'center'}}>
+                <Container maxWidth="lg" sx={{height: '100%', display: 'flex', alignItems: 'center'}}>
                     <Toolbar
                         disableGutters
                         sx={{
@@ -76,10 +121,10 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                     >
                         {/* Логотип и название магазина */}
                         <Box
-                            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                            sx={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}
                             onClick={handleLogoClick}
                         >
-                            <img src={logoImage} alt="Logo" style={{ height: '40px', marginRight: '8px' }} />
+                            <img src={logoImage} alt="Logo" style={{height: '40px', marginRight: '8px'}}/>
                             <Typography
                                 variant="h6"
                                 sx={{
@@ -95,7 +140,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                         </Box>
 
                         {/* Навигационные ссылки */}
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <Button
                                 component={HashLink}
                                 smooth
@@ -148,6 +193,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                                 to="/#about"
                                 variant="text"
                                 disableRipple
+                                onClick={() => scrollToSection("#about")}
                                 sx={{
                                     fontFamily: 'StyreneA, Arial, sans-serif',
                                     fontWeight: 400,
@@ -171,6 +217,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                                 to="/#delivery"
                                 variant="text"
                                 disableRipple
+                                onClick={() => scrollToSection("#delivery")}
                                 sx={{
                                     fontFamily: 'StyreneA, Arial, sans-serif',
                                     fontWeight: 400,
@@ -213,7 +260,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                         </Box>
 
                         {/* Кнопка "Задать вопрос" */}
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <Button
                                 variant="contained"
                                 onClick={onOpenAskQuestion}
@@ -241,54 +288,57 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
             {/* Убрали отступ для фиксированной Navbar */}
             {/* <Toolbar /> */}
 
-            <Box
-                sx={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '0',
-                }}
-            >
-                {totalQuantity > 0 && (
-                    <CustomTooltip
-                        title={`= ${totalPrice.toLocaleString()} ₽`}
-                        arrow
-                        placement="left"
-                        enterTouchDelay={0}
-                    >
-                        <CustomFab
-                            color="primary"
-                            aria-label="cart"
-                            sx={{
-                                position: 'absolute',
-                                top: '-45px',
-                                right: '20px',
-                                width: '80px',
-                                height: '80px',
-                                zIndex: 10,
-                            }}
-                            onClick={onOpenCart}
+            {!isCheckoutPage && ( // Условие для скрытия корзины на странице оформления заказа
+                <Box
+                    sx={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '0',
+                    }}
+                >
+                    {totalQuantity > 0 && (
+                        <CustomTooltip
+                            title={`= ${totalPrice.toLocaleString()} ₽`}
+                            arrow
+                            placement="left"
+                            enterTouchDelay={0}
                         >
-                            <Badge
-                                badgeContent={totalQuantity}
+                            <CustomFab
                                 color="primary"
+                                aria-label="cart"
                                 sx={{
-                                    '& .MuiBadge-badge': {
-                                        backgroundColor: '#000',
-                                        color: '#fff',
-                                        fontSize: '12px',
-                                    },
+                                    position: 'absolute',
+                                    top: '30px',
+                                    right: '20px',
+                                    width: '80px',
+                                    height: '80px',
+                                    zIndex: 10,
                                 }}
+                                onClick={onOpenCart}
                             >
-                                <img
-                                    src={shoppingBagIcon}
-                                    alt="Корзина"
-                                    style={{ width: '45px', height: '45px' }}
-                                />
-                            </Badge>
-                        </CustomFab>
-                    </CustomTooltip>
-                )}
-            </Box>
+                                <Badge
+                                    badgeContent={totalQuantity}
+                                    color="primary"
+                                    sx={{
+                                        '& .MuiBadge-badge': {
+                                            backgroundColor: '#000',
+                                            color: '#fff',
+                                            fontSize: '12px',
+                                        },
+                                    }}
+                                >
+                                    <img
+                                        src={shoppingBagIcon}
+                                        alt="Корзина"
+                                        style={{ width: '45px', height: '45px' }}
+                                    />
+                                </Badge>
+                            </CustomFab>
+                        </CustomTooltip>
+                    )}
+                </Box>
+            )}
+
         </>
     );
 };

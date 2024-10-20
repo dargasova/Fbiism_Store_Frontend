@@ -101,7 +101,7 @@ const ProductCard = ({product}) => {
                         </Box>
                     )}
                 </Box>
-                <CardContent sx={{padding: '16px 12px', textAlign: 'left'}}>
+                <CardContent sx={{padding: '16px 12px', paddingLeft: '10px', textAlign: 'left'}}>
                     <Typography
                         variant="h6"
                         sx={{
@@ -112,14 +112,16 @@ const ProductCard = ({product}) => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
+                            paddingLeft: '10px', // Добавлен отступ для названия товара
                         }}
                     >
                         {product.name}
                     </Typography>
-                    <Typography color='#282828' sx={{fontWeight: 560, fontSize: '20px'}}>
+                    <Typography color='#282828' sx={{fontWeight: 560, fontSize: '20px', paddingLeft: '10px'}}>
                         {formattedPrice}
                     </Typography>
                 </CardContent>
+
             </CardActionArea>
         </Card>
     );

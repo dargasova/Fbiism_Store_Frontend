@@ -1,5 +1,3 @@
-/* src/index.css */
-
 html {
     overflow-y: scroll;
 }
@@ -10,10 +8,19 @@ body {
     font-family: 'StyreneA', Arial, sans-serif;
     -webkit-font-smoothing: antialiased; /* Улучшение рендеринга шрифтов для WebKit-браузеров */
     -moz-osx-font-smoothing: grayscale; /* Улучшение рендеринга шрифтов для Firefox на macOS */
-
 }
 
 /* Стили для кода (если используется) */
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+/* Стили для центрирования секций */
+.centered-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Высота экрана */
+    text-align: center;
+}
+
