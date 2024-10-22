@@ -1,16 +1,20 @@
+// HomePage.jsx
 import React from 'react';
-import {Container, Typography, Button, Box, Divider, Grid} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
+import { Container, Typography, Button, Box, Divider, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
 import product1 from '../images/product1_colorcream_image4_photoroom.png';
 import product2 from '../images/product2_colorblack_image1_photoroom.png';
 import product3 from '../images/product3_colorblack_image1_photoroom.png';
-import {Player} from "@lottiefiles/react-lottie-player";
+import line from '../images/line.png';
+import hearts from '../images/hearts.png';
+import people1 from '../images/product1_colorcream_image4_photoroom_people.png';
+import people2 from '../images/product2_colorblack_image3_photoroom_people.png';
 import deliverySchema from '../images/delivery_schema.png';
 import courierAnimation from '../animations/courier.json';
 
-
 const primaryColor = '#760073';
-const backgroundColor = '#ebebeb'; // Теплый серый фон
+const backgroundColor = '#ebebeb';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -20,37 +24,28 @@ const HomePage = () => {
     };
 
     return (
-        <Box sx={{
-            width: '100%',
-            backgroundColor: backgroundColor,
-            padding: '0px 0'
-        }}> {/* Теплый серый фон и небольшой отступ */}
+        <Box sx={{ width: '100%', backgroundColor, padding: 0 }}>
             <Box
-                id="home" // Добавляем ID
+                id="home"
                 sx={{
                     backgroundColor: '#fff',
                     width: '100%',
-                    height: '700px', // Увеличена высота контейнера
+                    height: '700px',
                     overflow: 'hidden',
                     scrollMarginTop: '100px',
                     display: 'flex',
                     alignItems: 'center',
-                    outline: 'none',
-                }}> {/* Контейнер с выравниванием по центру */}
+                }}
+            >
                 <Container maxWidth="lg">
                     <Grid container spacing={4} alignItems="center">
                         <Grid item xs={12} md={6}>
-                            <Box sx={{
-                                marginLeft: {
-                                    xs: '-20px',
-                                    md: '-98px'
-                                }
-                            }}> {/* Подкорректирован отступ текста и кнопки */}
+                            <Box sx={{ marginLeft: { xs: '-20px', md: '-98px' } }}>
                                 <Typography
                                     variant="h3"
                                     sx={{
                                         fontFamily: 'StyreneA, Arial, sans-serif',
-                                        fontSize: {xs: '50px', md: '70px'}, // Увеличен размер шрифта
+                                        fontSize: { xs: '50px', md: '70px' },
                                         fontWeight: 700,
                                         color: primaryColor,
                                         marginBottom: '20px',
@@ -65,40 +60,36 @@ const HomePage = () => {
                                     sx={{
                                         borderColor: primaryColor,
                                         color: primaryColor,
-                                        borderWidth: '1.5px', // шире обводка
-                                        borderRadius: '30px', // округлая обводка
+                                        borderWidth: '1.5px',
+                                        borderRadius: '30px',
                                         '&:hover': {
                                             borderColor: '#5a0060',
                                             color: '#5a0060',
                                         },
                                         fontFamily: 'StyreneA, Arial, sans-serif',
-                                        fontSize: '20px', // Увеличен размер шрифта
+                                        fontSize: '20px',
                                         fontWeight: 600,
-                                        padding: '12px 35px', // Увеличен padding
+                                        padding: '12px 35px',
                                     }}
                                 >
                                     Каталог
                                 </Button>
-
                             </Box>
                         </Grid>
 
                         <Grid item xs={12} md={6}>
-                            <Box sx={{
-                                position: 'relative',
-                                height: '100%'
-                            }}> {/* Относительное позиционирование для контейнера изображений */}
+                            <Box sx={{ position: 'relative', height: '100%' }}>
                                 <img
                                     src={product1}
                                     alt="Product 1"
                                     style={{
-                                        width: '420px', // Увеличен размер изображения
-                                        height: '420px', // Увеличен размер изображения
+                                        width: '420px',
+                                        height: '420px',
                                         objectFit: 'cover',
                                         transform: 'rotate(6deg)',
                                         position: 'absolute',
-                                        top: '-180px', // Корректировка для худи
-                                        left: '450px', // Корректировка позиции
+                                        top: '-180px',
+                                        left: '450px',
                                         zIndex: 2,
                                     }}
                                 />
@@ -106,13 +97,13 @@ const HomePage = () => {
                                     src={product2}
                                     alt="Product 2"
                                     style={{
-                                        width: '340px', // Увеличен размер изображения
-                                        height: '340px', // Увеличен размер изображения
+                                        width: '340px',
+                                        height: '340px',
                                         objectFit: 'cover',
                                         transform: 'rotate(-10deg)',
                                         position: 'absolute',
-                                        top: '-230px', // Корректировка для футболки
-                                        left: '20px', // Корректировка позиции
+                                        top: '-230px',
+                                        left: '20px',
                                         zIndex: 1,
                                     }}
                                 />
@@ -120,29 +111,27 @@ const HomePage = () => {
                                     src={product3}
                                     alt="Product 3"
                                     style={{
-                                        width: '140px', // Увеличен размер изображения
-                                        height: '140px', // Увеличен размер изображения
+                                        width: '140px',
+                                        height: '140px',
                                         objectFit: 'cover',
                                         transform: 'rotate(-2deg)',
                                         position: 'absolute',
-                                        top: '-5px', // Корректировка для кружки
-                                        left: '195px', // Корректировка позиции
+                                        top: '-5px',
+                                        left: '195px',
                                         zIndex: 3,
                                     }}
                                 />
-
-                                {/* Добавляем изображение line.png */}
                                 <img
-                                    src={require('C:/Users/User/fbiism_store/src/images/line.png')}
+                                    src={line}
                                     alt="Line decoration"
                                     style={{
-                                        width: '1700px', // Увеличен размер изображения
+                                        width: '1700px',
                                         height: 'auto',
                                         transform: 'rotate(-2deg)',
                                         position: 'absolute',
                                         top: '-190px',
                                         left: '-400px',
-                                        zIndex: 0, // Самый нижний слой
+                                        zIndex: 0,
                                     }}
                                 />
                             </Box>
@@ -151,35 +140,39 @@ const HomePage = () => {
                 </Container>
             </Box>
 
-
-            <Divider sx={{color: primaryColor, margin: '30px 0', borderBottomWidth: 0, backgroundColor: primaryColor}}/>
-            {/* Секция "О нас" */}
-            <Box sx={{
-                backgroundColor: '#fff',
-                width: '100%',
-                height: '700px', // Уменьшена высота секции
-                overflow: 'hidden',
-                scrollMarginTop: '100px',
-                display: 'flex',
-                alignItems: 'center',
-                outline: 'none',
-            }}> {/* Контейнер с выравниванием по центру */}
-                <Grid container spacing={4} alignItems="center" id="about" sx={{scrollMarginTop: "100px"}}>
+            <Divider
+                sx={{
+                    backgroundColor: primaryColor,
+                    margin: '30px 0',
+                    borderBottomWidth: 0,
+                }}
+            />
+            <Box
+                sx={{
+                    backgroundColor: '#fff',
+                    width: '100%',
+                    height: '700px',
+                    overflow: 'hidden',
+                    scrollMarginTop: '100px',
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <Grid container spacing={4} alignItems="center" id="about" sx={{ scrollMarginTop: '100px' }}>
                     <Grid item xs={12} md={6}>
                         <Box
                             sx={{
-                                paddingLeft: {xs: '25px', md: '150px'},
-                                paddingRight: {xs: '25px', md: '50px'},
-                                maxWidth: '580px', // Ограничение ширины текста
-                                margin: '0 auto' // Выравнивание по центру
+                                paddingLeft: { xs: '25px', md: '150px' },
+                                paddingRight: { xs: '25px', md: '50px' },
+                                maxWidth: '580px',
+                                margin: '0 auto',
                             }}
                         >
-                            {/* Уменьшены отступы */}
                             <Typography
                                 variant="h4"
                                 sx={{
                                     fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontSize: {xs: '38px', md: '46px'}, // Размер текста немного уменьшен
+                                    fontSize: { xs: '38px', md: '46px' },
                                     fontWeight: 700,
                                     color: primaryColor,
                                     marginBottom: '20px',
@@ -189,12 +182,11 @@ const HomePage = () => {
                             </Typography>
                             <Typography
                                 variant="body1"
-                                paragraph
                                 sx={{
                                     fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontSize: '20px', // Оставлен стандартный размер
+                                    fontSize: '20px',
                                     color: '#000000',
-                                    lineHeight: '1.6', // Стандартное расстояние между строками
+                                    lineHeight: '1.6',
                                 }}
                             >
                                 Мы — команда людей, объединенных любовью к аналитике, знаниям и стилю. Наша миссия —
@@ -203,12 +195,11 @@ const HomePage = () => {
                             </Typography>
                             <Typography
                                 variant="body1"
-                                paragraph
                                 sx={{
                                     fontFamily: 'StyreneA, Arial, sans-serif',
                                     fontSize: '20px',
                                     color: '#000000',
-                                    lineHeight: '1.6', // Оставлено стандартное расстояние между строками
+                                    lineHeight: '1.6',
                                 }}
                             >
                                 Каждая наша деталь продумана до мельчайших нюансов. Мы стремимся к совершенству в каждом
@@ -216,7 +207,6 @@ const HomePage = () => {
                             </Typography>
                             <Typography
                                 variant="body1"
-                                paragraph
                                 sx={{
                                     fontFamily: 'StyreneA, Arial, sans-serif',
                                     fontSize: '20px',
@@ -228,56 +218,36 @@ const HomePage = () => {
                                 воплощать идеи в реальность.
                             </Typography>
                         </Box>
-
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'flex-end',
-                            position: 'relative',
-                            height: '100%'
-                        }}> {/* Ряд изображений */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-end',
+                                position: 'relative',
+                                height: '100%',
+                            }}
+                        >
                             <img
-                                src={require('C:/Users/User/fbiism_store/src/images/hearts.png')}
+                                src={hearts}
                                 alt="О нас"
                                 style={{
                                     width: '320px',
                                     height: 'auto',
-                                    transform: 'scaleX(-1)', // Сохранение отзеркаливания
+                                    transform: 'scaleX(-1)',
                                     position: 'relative',
                                     top: '-160px',
                                     left: '490px',
                                     marginRight: '20px',
-                                    animation: 'heartbeat 2s ease-in-out infinite', // Анимация биения сердца
+                                    animation: 'heartbeat 2s ease-in-out infinite',
                                 }}
                             />
-
-                            <style>
-                                {`
-    @keyframes heartbeat {
-        0% {
-            transform: scale(1) scaleX(-1); // Исходный размер и отзеркаливание
-        }
-        30% {
-            transform: scale(1.05) scaleX(-1); // Легкое увеличение на 5%
-        }
-        60% {
-            transform: scale(1) scaleX(-1); // Возврат к исходному размеру
-        }
-        100% {
-            transform: scale(1) scaleX(-1); // Конечное положение
-        }
-    }
-    `}
-                            </style>
-
                             <img
-                                src={require('C:/Users/User/fbiism_store/src/images/product1_colorcream_image4_photoroom_people.png')}
+                                src={people1}
                                 alt="Product 1"
                                 style={{
-                                    width: '370px', // Немного уменьшен размер изображения
+                                    width: '370px',
                                     height: 'auto',
                                     position: 'relative',
                                     top: '120px',
@@ -286,10 +256,10 @@ const HomePage = () => {
                                 }}
                             />
                             <img
-                                src={require('C:/Users/User/fbiism_store/src/images/product2_colorblack_image3_photoroom_people.png')}
+                                src={people2}
                                 alt="Product 2"
                                 style={{
-                                    width: '470px', // Уменьшен размер изображения
+                                    width: '470px',
                                     height: 'auto',
                                     top: '120px',
                                     left: '-450px',
@@ -302,27 +272,28 @@ const HomePage = () => {
                 </Grid>
             </Box>
 
+            <Divider
+                sx={{
+                    backgroundColor: primaryColor,
+                    margin: '30px 0',
+                    borderBottomWidth: 0,
+                }}
+            />
 
-            <Divider sx={{color: primaryColor, margin: '30px 0', borderBottomWidth: 0, backgroundColor: primaryColor}}/>
-
-            {/* Секция "Доставка" */}
             <Box
                 sx={{
                     backgroundColor: '#fff',
-                    paddingTop: '70px', // Отступ сверху
+                    paddingTop: '70px',
                     marginBottom: '-20px',
                     overflow: 'hidden',
                     position: 'relative',
                     zIndex: 0,
-                    outline: 'none',
-                    scrollMarginTop: '100px'
+                    scrollMarginTop: '100px',
                 }}
                 id="delivery"
             >
-
-                {/* Добавляем line.png под остальным контентом, но над фоном */}
                 <img
-                    src={require('C:/Users/User/fbiism_store/src/images/line.png')}
+                    src={line}
                     alt="Line decoration"
                     style={{
                         width: '1600px',
@@ -335,19 +306,12 @@ const HomePage = () => {
                     }}
                 />
 
-                {/* Общий контейнер для заголовка и текста с единым отступом слева */}
-                <Box
-                    sx={{
-                        paddingLeft: '175px', // Единый отступ слева
-                        paddingRight: {xs: '20px', md: '175px'}, // Отступ справа для адаптивности
-                    }}
-                >
-                    {/* Заголовок "Доставка" */}
+                <Box sx={{ paddingLeft: '175px', paddingRight: { xs: '20px', md: '175px' } }}>
                     <Typography
                         variant="h4"
                         sx={{
                             fontFamily: 'StyreneA, Arial, sans-serif',
-                            fontSize: {xs: '36px', md: '44px'},
+                            fontSize: { xs: '36px', md: '44px' },
                             fontWeight: 700,
                             color: primaryColor,
                             textAlign: 'left',
@@ -357,14 +321,7 @@ const HomePage = () => {
                         Доставка
                     </Typography>
 
-                    {/* Добавляем список с информацией */}
-                    <Box
-                        sx={{
-                            position: 'relative',
-                            maxWidth: '1000px',
-                            textAlign: 'left',
-                        }}
-                    >
+                    <Box sx={{ position: 'relative', maxWidth: '1000px', textAlign: 'left' }}>
                         <Typography
                             variant="body1"
                             sx={{
@@ -377,13 +334,7 @@ const HomePage = () => {
                         >
                             Мы предлагаем удобную и быструю доставку для наших клиентов:
                         </Typography>
-                        <ul
-                            style={{
-                                listStyleType: 'none',
-                                padding: 0,
-                                margin: 0,
-                            }}
-                        >
+                        <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                             <li
                                 style={{
                                     display: 'flex',
@@ -391,22 +342,22 @@ const HomePage = () => {
                                     marginBottom: '15px',
                                 }}
                             >
-            <span
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '25px',
-                    height: '25px',
-                    backgroundColor: primaryColor,
-                    borderRadius: '50%',
-                    color: '#fff',
-                    fontSize: '16px',
-                    marginRight: '10px',
-                }}
-            >
-                1
-            </span>
+                                <span
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '25px',
+                                        height: '25px',
+                                        backgroundColor: primaryColor,
+                                        borderRadius: '50%',
+                                        color: '#fff',
+                                        fontSize: '16px',
+                                        marginRight: '10px',
+                                    }}
+                                >
+                                    1
+                                </span>
                                 <Typography
                                     variant="body1"
                                     sx={{
@@ -419,28 +370,23 @@ const HomePage = () => {
                                     Выберите и оплатите товар на сайте
                                 </Typography>
                             </li>
-                            <li
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}
-                            >
-            <span
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '25px',
-                    height: '25px',
-                    backgroundColor: primaryColor,
-                    borderRadius: '50%',
-                    color: '#fff',
-                    fontSize: '16px',
-                    marginRight: '10px',
-                }}
-            >
-                2
-            </span>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <span
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '25px',
+                                        height: '25px',
+                                        backgroundColor: primaryColor,
+                                        borderRadius: '50%',
+                                        color: '#fff',
+                                        fontSize: '16px',
+                                        marginRight: '10px',
+                                    }}
+                                >
+                                    2
+                                </span>
                                 <Typography
                                     variant="body1"
                                     sx={{
@@ -455,36 +401,21 @@ const HomePage = () => {
                             </li>
                         </ul>
                     </Box>
-
                 </Box>
 
-                {/* Контейнер для изображения и анимации */}
-                <Box
-                    sx={{
-                        position: 'relative',
-                        width: '100%',
-                        marginTop: '70px',
-                        paddingLeft: '175px', // Соответствует отступу заголовка и текста
-                    }}
-                >
-                    {/* Возвращаем анимацию "курьер" */}
+                <Box sx={{ position: 'relative', width: '100%', marginTop: '70px', paddingLeft: '175px' }}>
                     <Box
                         sx={{
                             position: 'absolute',
-                            top: '-5px', // Регулируйте по необходимости
-                            right: '840px', // Регулируйте по необходимости
+                            top: '-5px',
+                            right: '840px',
                             width: '150px',
                             height: '150px',
                             pointerEvents: 'none',
                             zIndex: 2,
                         }}
                     >
-                        <Player
-                            autoplay
-                            loop
-                            src={courierAnimation}
-                            style={{height: '100%', width: '100%'}}
-                        />
+                        <Player autoplay loop src={courierAnimation} style={{ height: '100%', width: '100%' }} />
                     </Box>
 
                     <img
@@ -492,14 +423,12 @@ const HomePage = () => {
                         alt="Delivery Schema"
                         style={{
                             width: '60%',
-                            display: 'block', // Используем block для правильного выравнивания
-                            marginLeft: '0', // Удаляем margin-left, так как padding уже установлен
+                            display: 'block',
+                            marginLeft: 0,
                         }}
                     />
                 </Box>
             </Box>
-
-
         </Box>
     );
 };

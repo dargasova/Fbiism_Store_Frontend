@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Typography, TextField, Button, Grid, Box, Paper, Divider } from '@mui/material';
-import InputMask from 'react-input-mask';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom'; // Импорт useNavigate
+import React, {useState} from 'react';
+import {Typography, TextField, Button, Grid, Box, Paper, Divider} from '@mui/material';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {useNavigate} from 'react-router-dom';
+import NumberFormatCustom from '../components/NumberFormatCustom';
 
 const theme = createTheme({
     palette: {
@@ -15,28 +15,41 @@ const theme = createTheme({
     },
 });
 
-const CheckoutPage = ({ cart }) => {
+const CheckoutPage = ({cart}) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [patronymic, setPatronymic] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState({}); // Добавим состояние для ошибок
+    const [errors, setErrors] = useState({});
+    const [cartError, setCartError] = useState('');
 
-    const navigate = useNavigate(); // Хук для навигации
+    const navigate = useNavigate();
 
     const validateForm = () => {
-        let formErrors = {};
+        const formErrors = {};
         if (!surname.trim()) formErrors.surname = 'Введите фамилию';
         if (!name.trim()) formErrors.name = 'Введите имя';
         if (!patronymic.trim()) formErrors.patronymic = 'Введите отчество';
-        if (!phone.trim() || phone.includes('_')) formErrors.phone = 'Введите корректный номер телефона';
+
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length !== 10) {
+            formErrors.phone = 'Введите корректный номер телефона';
+        }
+
         if (!email.trim()) formErrors.email = 'Введите электронную почту';
         return formErrors;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (isCartEmpty) {
+            setCartError('Ваша корзина пуста. Добавьте товары для оформления заказа.');
+            return;
+        } else {
+            setCartError('');
+        }
 
         const formErrors = validateForm();
         if (Object.keys(formErrors).length > 0) {
@@ -54,7 +67,6 @@ const CheckoutPage = ({ cart }) => {
         };
         console.log('Order Data:', orderData);
 
-        // Перенаправление на страницу оплаты
         navigate('/payment');
     };
 
@@ -62,7 +74,7 @@ const CheckoutPage = ({ cart }) => {
         const groupedProducts = cart.reduce((acc, product) => {
             const key = `${product.id}-${product.selectedColor || 'Не выбран'}-${product.selectedSize || 'Не выбран'}`;
             if (!acc[key]) {
-                acc[key] = { ...product, quantity: 0 };
+                acc[key] = {...product, quantity: 0};
             }
             acc[key].quantity += product.quantity;
             return acc;
@@ -73,8 +85,11 @@ const CheckoutPage = ({ cart }) => {
 
     const groupedCart = getGroupedProducts();
 
+    const totalItems = groupedCart.reduce((acc, product) => acc + product.quantity, 0);
+    const isCartEmpty = totalItems === 0;
+
     return (
-        <div style={{ backgroundColor: '#ebebeb', minHeight: '90vh' }}>
+        <div style={{backgroundColor: '#ebebeb', minHeight: '90vh'}}>
             <ThemeProvider theme={theme}>
                 <Box
                     sx={{
@@ -83,14 +98,14 @@ const CheckoutPage = ({ cart }) => {
                         alignItems: 'flex-start',
                         justifyContent: 'center',
                         paddingTop: 2,
-                        paddingLeft: { xs: 1, sm: 2 },
-                        paddingRight: { xs: 1, sm: 2 },
+                        paddingLeft: {xs: 1, sm: 2},
+                        paddingRight: {xs: 1, sm: 2},
                     }}
                 >
                     <Paper
                         elevation={6}
                         sx={{
-                            padding: { xs: 3, md: 6 },
+                            padding: {xs: 3, md: 6},
                             borderRadius: 2,
                             width: '100%',
                             maxWidth: '1200px',
@@ -107,27 +122,39 @@ const CheckoutPage = ({ cart }) => {
                                 fontWeight: 700,
                                 color: '#760073',
                                 mb: 3,
-                                fontSize: { xs: '38px', md: '46px' },
+                                fontSize: {xs: '38px', md: '46px'},
                             }}
                         >
                             Оформление заказа
                         </Typography>
 
-                        <Box sx={{ mb: 4 }}>
+                        <Box sx={{mb: 4}}>
                             <Button
                                 variant="outlined"
                                 color="primary"
                                 onClick={() => navigate('/catalog')}
-                                sx={{ fontWeight: 500 }}
+                                sx={{fontWeight: 500}}
                             >
                                 Назад к каталогу
                             </Button>
                         </Box>
 
+                        {isCartEmpty && (
+                            <Typography color="error" sx={{mb: 2}}>
+                                Ваша корзина пуста. Добавьте товары для оформления заказа.
+                            </Typography>
+                        )}
+
+                        {cartError && (
+                            <Typography color="error" sx={{mb: 2}}>
+                                {cartError}
+                            </Typography>
+                        )}
+
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={4} alignItems="flex-start">
                                 <Grid item xs={12} md={6}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                    <Box sx={{display: 'flex', flexDirection: 'column', gap: 3}}>
                                         <TextField
                                             label="Фамилия"
                                             fullWidth
@@ -138,7 +165,7 @@ const CheckoutPage = ({ cart }) => {
                                             error={!!errors.surname}
                                             helperText={errors.surname}
                                             InputProps={{
-                                                style: { fontWeight: 400 }
+                                                style: {fontWeight: 400},
                                             }}
                                         />
                                         <TextField
@@ -151,7 +178,7 @@ const CheckoutPage = ({ cart }) => {
                                             error={!!errors.name}
                                             helperText={errors.name}
                                             InputProps={{
-                                                style: { fontWeight: 400 }
+                                                style: {fontWeight: 400},
                                             }}
                                         />
                                         <TextField
@@ -164,28 +191,24 @@ const CheckoutPage = ({ cart }) => {
                                             error={!!errors.patronymic}
                                             helperText={errors.patronymic}
                                             InputProps={{
-                                                style: { fontWeight: 400 }
+                                                style: {fontWeight: 400},
                                             }}
                                         />
-                                        <InputMask
-                                            mask="+7 (999) 999-99-99"
+                                        <TextField
+                                            fullWidth
+                                            required
+                                            variant="outlined"
                                             value={phone}
                                             onChange={(e) => setPhone(e.target.value)}
-                                            required
-                                        >
-                                            {() => (
-                                                <TextField
-                                                    label="Номер телефона *"
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    error={!!errors.phone}
-                                                    helperText={errors.phone}
-                                                    InputProps={{
-                                                        style: { fontWeight: 400 }
-                                                    }}
-                                                />
-                                            )}
-                                        </InputMask>
+                                            error={!!errors.phone}
+                                            helperText={errors.phone}
+                                            InputProps={{
+                                                inputComponent: NumberFormatCustom,
+                                            }}
+                                            inputProps={{
+                                                name: 'phone',
+                                            }}
+                                        />
                                         <TextField
                                             label="Электронная почта"
                                             fullWidth
@@ -197,23 +220,18 @@ const CheckoutPage = ({ cart }) => {
                                             error={!!errors.email}
                                             helperText={errors.email}
                                             InputProps={{
-                                                style: { fontWeight: 400 }
+                                                style: {fontWeight: 400},
                                             }}
                                         />
                                     </Box>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                                        <Box sx={{ flex: 1, overflowY: 'auto' }}>
+                                    <Box sx={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+                                        <Box sx={{flex: 1, overflowY: 'auto'}}>
                                             {groupedCart.map((product, index) => {
-                                                let mainImage;
-                                                if (product.id === 1) {
-                                                    mainImage = product.images[product.images.length - 1]?.url;
-                                                } else {
-                                                    mainImage = product.selectedColor
-                                                        ? product.images.find(img => img.color === product.selectedColor)?.url || product.images[0]?.url
-                                                        : product.images[0]?.url;
-                                                }
+                                                const mainImage = product.selectedColor
+                                                    ? product.images.find(img => img.color === product.selectedColor)?.url || product.images[0]?.url
+                                                    : product.images[0]?.url;
 
                                                 return (
                                                     <Box
@@ -237,7 +255,7 @@ const CheckoutPage = ({ cart }) => {
                                                                     height: '80px',
                                                                     objectFit: 'cover',
                                                                     borderRadius: '8px',
-                                                                    marginRight: '20px'
+                                                                    marginRight: '20px',
                                                                 }}
                                                             />
                                                         )}
@@ -246,7 +264,7 @@ const CheckoutPage = ({ cart }) => {
                                                                 variant="body1"
                                                                 sx={{
                                                                     fontWeight: 700,
-                                                                    mb: 1
+                                                                    mb: 1,
                                                                 }}
                                                             >
                                                                 {product.name}
@@ -258,7 +276,8 @@ const CheckoutPage = ({ cart }) => {
                                                                     color: 'black',
                                                                 }}
                                                             >
-                                                                Цвет: {product.selectedColor || 'Не выбран'}, Размер: {product.selectedSize || 'Не выбран'}
+                                                                Цвет: {product.selectedColor || 'Не выбран'},
+                                                                Размер: {product.selectedSize || 'Не выбран'}
                                                             </Typography>
                                                             <Typography
                                                                 variant="body2"
@@ -276,7 +295,7 @@ const CheckoutPage = ({ cart }) => {
                                                                 variant="body1"
                                                                 sx={{
                                                                     fontWeight: 700,
-                                                                    textAlign: 'right'
+                                                                    textAlign: 'right',
                                                                 }}
                                                             >
                                                                 {product.price * product.quantity} ₽
@@ -286,22 +305,23 @@ const CheckoutPage = ({ cart }) => {
                                                 );
                                             })}
                                         </Box>
-                                        <Divider sx={{ mt: 2, mb: 2 }} />
+                                        <Divider sx={{mt: 2, mb: 2}}/>
                                         <Box display="flex" justifyContent="flex-end">
                                             <Typography
                                                 variant="h6"
                                                 sx={{
                                                     fontWeight: 700,
-                                                    color: 'black'
+                                                    color: 'black',
                                                 }}
                                             >
-                                                Общая сумма: {groupedCart.reduce((total, product) => total + product.price * product.quantity, 0)} ₽
+                                                Общая
+                                                сумма: {groupedCart.reduce((total, product) => total + product.price * product.quantity, 0)} ₽
                                             </Typography>
                                         </Box>
                                     </Box>
                                 </Grid>
                             </Grid>
-                            <Box sx={{ mt: 4 }}>
+                            <Box sx={{mt: 4}}>
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -310,8 +330,9 @@ const CheckoutPage = ({ cart }) => {
                                     size="large"
                                     sx={{
                                         paddingY: 1.5,
-                                        fontWeight: 500
+                                        fontWeight: 500,
                                     }}
+                                    disabled={isCartEmpty}
                                 >
                                     Перейти к оплате
                                 </Button>

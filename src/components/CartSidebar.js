@@ -1,22 +1,30 @@
-import React, {useEffect} from 'react';
-import {Typography, Box, Button, IconButton, Drawer} from '@mui/material';
+// CartSidebar.jsx
+import React, {useEffect, useCallback, useMemo} from 'react';
+import {
+    Typography,
+    Box,
+    Button,
+    IconButton,
+    Drawer,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {useNavigate} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const CartSidebar = ({cart, setCart, isOpen, onClose}) => {
+const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
     const navigate = useNavigate();
 
-    const colorTranslations = {
-        'cream': 'кремовый',
-        'black': 'черный',
-        'white': 'белый'
-    };
+    const colorTranslations = useMemo(() => ({
+        cream: 'кремовый',
+        black: 'черный',
+        white: 'белый',
+    }), []);
 
-    const updateLocalStorage = (updatedCart) => {
+    const updateLocalStorage = useCallback((updatedCart) => {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
-    };
+    }, []);
 
     useEffect(() => {
         if (cart.length === 0) {
@@ -24,26 +32,28 @@ const CartSidebar = ({cart, setCart, isOpen, onClose}) => {
         }
     }, [cart, onClose]);
 
-    const handleDecreaseQuantity = (productId, selectedColor, selectedSize) => {
-        setCart(prevCart => {
-            const updatedCart = prevCart.map(item => {
-                if (
-                    item.id === productId &&
-                    item.selectedColor === selectedColor &&
-                    item.selectedSize === selectedSize
-                ) {
-                    return {...item, quantity: item.quantity - 1};
-                }
-                return item;
-            }).filter(item => item.quantity > 0);
+    const handleDecreaseQuantity = useCallback((productId, selectedColor, selectedSize) => {
+        setCart((prevCart) => {
+            const updatedCart = prevCart
+                .map((item) => {
+                    if (
+                        item.id === productId &&
+                        item.selectedColor === selectedColor &&
+                        item.selectedSize === selectedSize
+                    ) {
+                        return {...item, quantity: item.quantity - 1};
+                    }
+                    return item;
+                })
+                .filter((item) => item.quantity > 0);
             updateLocalStorage(updatedCart);
             return updatedCart;
         });
-    };
+    }, [setCart, updateLocalStorage]);
 
-    const handleIncreaseQuantity = (productId, selectedColor, selectedSize) => {
-        setCart(prevCart => {
-            const updatedCart = prevCart.map(item => {
+    const handleIncreaseQuantity = useCallback((productId, selectedColor, selectedSize) => {
+        setCart((prevCart) => {
+            const updatedCart = prevCart.map((item) => {
                 if (
                     item.id === productId &&
                     item.selectedColor === selectedColor &&
@@ -56,11 +66,11 @@ const CartSidebar = ({cart, setCart, isOpen, onClose}) => {
             updateLocalStorage(updatedCart);
             return updatedCart;
         });
-    };
+    }, [setCart, updateLocalStorage]);
 
-    const handleRemoveAll = (productId, selectedColor, selectedSize) => {
-        setCart(prevCart => {
-            const updatedCart = prevCart.filter(item => !(
+    const handleRemoveAll = useCallback((productId, selectedColor, selectedSize) => {
+        setCart((prevCart) => {
+            const updatedCart = prevCart.filter((item) => !(
                 item.id === productId &&
                 item.selectedColor === selectedColor &&
                 item.selectedSize === selectedSize
@@ -68,40 +78,61 @@ const CartSidebar = ({cart, setCart, isOpen, onClose}) => {
             updateLocalStorage(updatedCart);
             return updatedCart;
         });
-    };
+    }, [setCart, updateLocalStorage]);
 
-    const handleProceedToCheckout = () => {
+    const handleProceedToCheckout = useCallback(() => {
         onClose();
         navigate('/checkout');
-    };
+    }, [navigate, onClose]);
+
+    const totalAmount = useMemo(() => {
+        return cart.reduce((total, product) => total + product.price * product.quantity, 0);
+    }, [cart]);
 
     return (
         <Drawer anchor="right" open={isOpen} onClose={onClose}>
-            <div
-                style={{
-                    width: '530px',
+            <Box
+                sx={{
+                    width: {xs: '100%', sm: '530px'},
                     height: '100%',
                     backgroundColor: '#fff',
                     boxShadow: '-2px 0 5px rgba(0,0,0,0.5)',
                     overflowY: 'auto',
-                    padding: '20px'
+                    padding: '20px',
                 }}
             >
-                <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
-                    <Typography variant="h5" style={{fontFamily: 'StyreneA, Arial, sans-serif', fontWeight: 700}}>
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    p={2}
+                >
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontFamily: 'StyreneA, Arial, sans-serif',
+                            fontWeight: 700,
+                        }}
+                    >
                         Ваш заказ
                     </Typography>
-                    <IconButton onClick={onClose} style={{width: '40px', height: '40px'}}>
-                        <CloseIcon style={{fontSize: '30px'}}/>
+                    <IconButton onClick={onClose} sx={{width: '40px', height: '40px'}}>
+                        <CloseIcon sx={{fontSize: '30px'}}/>
                     </IconButton>
                 </Box>
                 {cart.length === 0 ? (
-                    <Typography variant="body1"
-                                style={{padding: '0 16px', fontFamily: 'StyreneA, Arial, sans-serif', fontWeight: 400}}>
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            padding: '0 16px',
+                            fontFamily: 'StyreneA, Arial, sans-serif',
+                            fontWeight: 400,
+                        }}
+                    >
                         Ваша корзина пуста.
                     </Typography>
                 ) : (
-                    cart.map((product, index) => {
+                    cart.map((product) => {
                         let mainImage;
                         if (product.id === 1) {
                             mainImage = product.images[product.images.length - 1]?.url;
@@ -113,110 +144,185 @@ const CartSidebar = ({cart, setCart, isOpen, onClose}) => {
 
                         const translatedColor = colorTranslations[product.selectedColor] || product.selectedColor;
 
+                        const productTotal = product.price * product.quantity;
+
                         return (
-                            <Box key={index} display="flex" alignItems="center" p={2} borderBottom="1px solid #ccc">
+                            <Box
+                                key={`${product.id}-${product.selectedColor}-${product.selectedSize}`}
+                                display="flex"
+                                alignItems="center"
+                                p={2}
+                                borderBottom="1px solid #ccc"
+                            >
                                 {mainImage && (
-                                    <img
+                                    <Box
+                                        component="img"
                                         src={mainImage}
                                         alt={product.name}
-                                        style={{width: '80px', height: '80px', objectFit: 'cover', marginRight: '15px'}}
+                                        sx={{
+                                            width: '80px',
+                                            height: '80px',
+                                            objectFit: 'cover',
+                                            marginRight: '15px',
+                                        }}
                                     />
                                 )}
                                 <Box flex="1" mr={2}>
-                                    <Typography variant="body1"
-                                                style={{
-                                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                                    fontWeight: 700,
-                                                    color: '#000000' // Цвет заголовка товара
-                                                }}>
+                                    <Typography
+                                        variant="body1"
+                                        sx={{
+                                            fontFamily: 'StyreneA, Arial, sans-serif',
+                                            fontWeight: 700,
+                                            color: '#000000',
+                                        }}
+                                    >
                                         {product.name}
                                     </Typography>
-                                    <Typography variant="body2"
-                                                style={{fontFamily: 'StyreneA, Arial, sans-serif', fontWeight: 400}}>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{
+                                            fontFamily: 'StyreneA, Arial, sans-serif',
+                                            fontWeight: 400,
+                                        }}
+                                    >
                                         Цвет: {translatedColor || 'Не выбран'}
                                     </Typography>
-                                    <Typography variant="body2"
-                                                style={{fontFamily: 'StyreneA, Arial, sans-serif', fontWeight: 400}}>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{
+                                            fontFamily: 'StyreneA, Arial, sans-serif',
+                                            fontWeight: 400,
+                                        }}
+                                    >
                                         Размер: {product.selectedSize || 'ONE SIZE'}
                                     </Typography>
                                 </Box>
-                                <Box display="flex" alignItems="center" style={{gap: '10px'}}>
+                                <Box display="flex" alignItems="center" sx={{gap: '10px'}}>
                                     <IconButton
                                         onClick={() => handleDecreaseQuantity(product.id, product.selectedColor, product.selectedSize)}
-                                        style={{
+                                        sx={{
                                             width: '24px',
                                             height: '24px',
                                             border: '1px solid #ccc',
-                                            borderRadius: '50%'
-                                        }}>
-                                        <RemoveIcon style={{fontSize: '12px'}}/>
+                                            borderRadius: '50%',
+                                        }}
+                                    >
+                                        <RemoveIcon sx={{fontSize: '12px'}}/>
                                     </IconButton>
-                                    <Typography style={{fontFamily: 'StyreneA, Arial, sans-serif', fontWeight: 700}}>
+                                    <Typography
+                                        sx={{
+                                            fontFamily: 'StyreneA, Arial, sans-serif',
+                                            fontWeight: 700,
+                                        }}
+                                    >
                                         {product.quantity}
                                     </Typography>
                                     <IconButton
                                         onClick={() => handleIncreaseQuantity(product.id, product.selectedColor, product.selectedSize)}
-                                        style={{
+                                        sx={{
                                             width: '24px',
                                             height: '24px',
                                             border: '1px solid #ccc',
-                                            borderRadius: '50%'
-                                        }}>
-                                        <AddIcon style={{fontSize: '12px'}}/>
+                                            borderRadius: '50%',
+                                        }}
+                                    >
+                                        <AddIcon sx={{fontSize: '12px'}}/>
                                     </IconButton>
                                 </Box>
-                                <Typography style={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 700,
-                                    textAlign: 'right',
-                                    width: '80px'
-                                }}>
-                                    {product.price * product.quantity} ₽
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'StyreneA, Arial, sans-serif',
+                                        fontWeight: 700,
+                                        textAlign: 'right',
+                                        width: '80px',
+                                    }}
+                                >
+                                    {productTotal} ₽
                                 </Typography>
                                 <IconButton
                                     onClick={() => handleRemoveAll(product.id, product.selectedColor, product.selectedSize)}
-                                    style={{
+                                    sx={{
                                         width: '24px',
                                         height: '24px',
                                         border: '1px solid #ccc',
                                         borderRadius: '50%',
-                                        marginLeft: '20px'
-                                    }}>
-                                    <CloseIcon style={{fontSize: '12px'}}/>
+                                        marginLeft: '20px',
+                                    }}
+                                >
+                                    <CloseIcon sx={{fontSize: '12px'}}/>
                                 </IconButton>
                             </Box>
                         );
                     })
                 )}
-                <Box display="flex" justifyContent="flex-end" alignItems="center" p={2}>
-                    <Typography variant="h6" style={{fontFamily: 'StyreneA, Arial, sans-serif', fontWeight: 700}}>
-                        Сумма: {cart.reduce((total, product) => total + product.price * product.quantity, 0)} ₽
-                    </Typography>
-                </Box>
-                <Box p={2}>
-                    <Button
-                        variant="contained"
-                        style={{
-                            backgroundColor: '#760073',
-                            color: 'white',
-                            fontFamily: 'StyreneA, Arial, sans-serif',
-                            fontWeight: 500,
-                            fontSize: '16px', // Увеличен размер текста
-                            padding: '10px 0', // Увеличен размер кнопки
-                            borderRadius: '0px', // Скругление кнопки
-                            '&:hover': {
-                                backgroundColor: '#59005a',
-                            }
-                        }}
-                        fullWidth
-                        onClick={handleProceedToCheckout}
-                    >
-                        Дальше
-                    </Button>
-                </Box>
-            </div>
+                {cart.length > 0 && (
+                    <>
+                        <Box
+                            display="flex"
+                            justifyContent="flex-end"
+                            alignItems="center"
+                            p={2}
+                        >
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontFamily: 'StyreneA, Arial, sans-serif',
+                                    fontWeight: 700,
+                                }}
+                            >
+                                Сумма: {totalAmount} ₽
+                            </Typography>
+                        </Box>
+                        <Box p={2}>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: '#760073',
+                                    color: 'white',
+                                    fontFamily: 'StyreneA, Arial, sans-serif',
+                                    fontWeight: 500,
+                                    fontSize: '16px',
+                                    padding: '10px 0',
+                                    borderRadius: '0px',
+                                    '&:hover': {
+                                        backgroundColor: '#59005a',
+                                    },
+                                }}
+                                fullWidth
+                                onClick={handleProceedToCheckout}
+                            >
+                                Дальше
+                            </Button>
+                        </Box>
+                    </>
+                )}
+            </Box>
         </Drawer>
     );
+
+});
+
+CartSidebar.propTypes = {
+    cart: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+            name: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired,
+            images: PropTypes.arrayOf(
+                PropTypes.shape({
+                    url: PropTypes.string.isRequired,
+                    color: PropTypes.string,
+                })
+            ).isRequired,
+            selectedColor: PropTypes.string,
+            selectedSize: PropTypes.string,
+            quantity: PropTypes.number.isRequired,
+            isFavorite: PropTypes.bool,
+        })
+    ).isRequired,
+    setCart: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default CartSidebar;

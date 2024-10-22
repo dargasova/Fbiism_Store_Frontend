@@ -1,10 +1,22 @@
 import React from 'react';
 import {Container, Typography, Box, Link, Grid} from '@mui/material';
-import logo from '../images/logo_fbiism.png'; // Импортируем логотип
-import telegramIcon from '../images/telegram.png'; // Импортируем иконку Telegram
-import vkIcon from '../images/vk.png'; // Импортируем иконку ВКонтакте
+import logo from '../images/logo_fbiism.png';
+import telegramIcon from '../images/telegram.png';
+import vkIcon from '../images/vk.png';
 
 const primaryColor = '#760073';
+
+const footerLinkStyle = {
+    display: 'block',
+    color: '#ffffff',
+    textDecoration: 'none',
+    marginBottom: '8px',
+    fontFamily: 'StyreneA, Arial, sans-serif',
+    fontSize: '16px',
+    fontWeight: 400,
+    '&:hover': {color: '#FFA500'},
+    transition: 'color 0.3s ease',
+};
 
 const scrollToSection = (id) => {
     const section = document.querySelector(id);
@@ -15,7 +27,7 @@ const scrollToSection = (id) => {
 
         const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
-        const duration = 1000; // Увеличили длительность до 1000 мс для более плавного скроллинга
+        const duration = 1000;
         let start = null;
 
         const step = (timestamp) => {
@@ -34,12 +46,11 @@ const scrollToSection = (id) => {
     }
 };
 
-// Функция для ещё более плавной анимации (ease-in-out, но мягче)
 const easeInOutQuad = (t, b, c, d) => {
     t /= d / 2;
-    if (t < 1) return c / 2 * t * t + b;
+    if (t < 1) return (c / 2) * t * t + b;
     t--;
-    return -c / 2 * (t * (t - 2) - 1) + b;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
 };
 
 const Footer = () => {
@@ -49,15 +60,14 @@ const Footer = () => {
             sx={{
                 backgroundColor: primaryColor,
                 color: '#ffffff',
-                paddingTop: '45px', // Отступ сверху
-                paddingBottom: '30px', // Отступ снизу
+                paddingTop: '45px',
+                paddingBottom: '30px',
                 marginTop: 'auto',
             }}
             id="contacts"
         >
             <Container maxWidth="lg">
                 <Grid container spacing={4} alignItems="flex-start">
-                    {/* Логотип и название магазина */}
                     <Grid item xs={12} md={3} sx={{position: 'relative', height: '200px'}}>
                         <Box
                             sx={{
@@ -90,7 +100,6 @@ const Footer = () => {
                         </Box>
                     </Grid>
 
-                    {/* Контейнер для "Контакты" и "Быстрые ссылки" с точным позиционированием */}
                     <Grid item xs={12} md={9} sx={{position: 'relative'}}>
                         <Box
                             sx={{
@@ -99,7 +108,6 @@ const Footer = () => {
                             }}
                         >
                             <Grid container spacing={4}>
-                                {/* Контактная информация */}
                                 <Grid item xs={12} md={6}>
                                     <Box textAlign={{xs: 'center', md: 'left'}}>
                                         <Typography
@@ -121,8 +129,8 @@ const Footer = () => {
                                                 fontFamily: 'StyreneA, Arial, sans-serif',
                                                 fontWeight: 200,
                                                 fontSize: '16px',
-                                                lineHeight: '1.2', // Межстрочный интервал
-                                                marginBottom: '20px', // Отступ между элементами
+                                                lineHeight: '1.2',
+                                                marginBottom: '20px',
                                             }}
                                         >
                                             Адрес: Каширское ш., д. 31, Москва
@@ -134,7 +142,7 @@ const Footer = () => {
                                                 fontFamily: 'StyreneA, Arial, sans-serif',
                                                 fontWeight: 400,
                                                 fontSize: '16px',
-                                                lineHeight: '1.2', // Межстрочный интервал
+                                                lineHeight: '1.2',
                                                 marginBottom: '20px',
                                             }}
                                         >
@@ -151,15 +159,20 @@ const Footer = () => {
                                                 marginBottom: '20px',
                                             }}
                                         >
-                                            Email: <Link href="mailto:info@fbiismstore.com" sx={{
-                                            color: '#FFA500',
-                                            textDecoration: 'none'
-                                        }}>info@fbiismstore.com</Link>
+                                            Email:{' '}
+                                            <Link
+                                                href="mailto:info@fbiismstore.com"
+                                                sx={{
+                                                    color: '#FFA500',
+                                                    textDecoration: 'none',
+                                                }}
+                                            >
+                                                info@fbiismstore.com
+                                            </Link>
                                         </Typography>
                                     </Box>
                                 </Grid>
 
-                                {/* Быстрые ссылки */}
                                 <Grid item xs={12} md={6}>
                                     <Box textAlign={{xs: 'center', md: 'left'}}>
                                         <Typography
@@ -176,19 +189,17 @@ const Footer = () => {
                                         </Typography>
                                         <Box>
                                             <Link
-                                                onClick={() => scrollToSection("#home")}
-                                                sx={{ ...footerLinkStyle, marginBottom: '20px', cursor: 'pointer' }}
+                                                onClick={() => scrollToSection('#home')}
+                                                sx={{...footerLinkStyle, marginBottom: '20px', cursor: 'pointer'}}
                                             >
                                                 Главная
                                             </Link>
-
                                             <Link
-                                                onClick={() => scrollToSection("#about")}
-                                                sx={{ ...footerLinkStyle, marginBottom: '20px', cursor: 'pointer' }}
+                                                onClick={() => scrollToSection('#about')}
+                                                sx={{...footerLinkStyle, marginBottom: '20px', cursor: 'pointer'}}
                                             >
                                                 О нас
                                             </Link>
-
                                             <Link href="/catalog" sx={{...footerLinkStyle, marginBottom: '20px'}}>
                                                 Каталог
                                             </Link>
@@ -199,14 +210,12 @@ const Footer = () => {
                         </Box>
                     </Grid>
 
-
-                    {/* Иконки соцсетей */}
                     <Grid item xs={12} sx={{textAlign: 'right', marginTop: '-202px', transform: 'translateX(150px)'}}>
                         <Box
                             component="a"
                             href="https://t.me/bi_mephi"
                             target="_blank"
-                            sx={{display: 'inline-block', marginRight: '20px'}} // Отступ между иконками
+                            sx={{display: 'inline-block', marginRight: '20px'}}
                         >
                             <Box
                                 component="img"
@@ -222,7 +231,7 @@ const Footer = () => {
                             component="a"
                             href="https://vk.com/fbiuks"
                             target="_blank"
-                            sx={{display: 'inline-block', marginRight: '0px'}} // Отступ между иконками
+                            sx={{display: 'inline-block', marginRight: '0px'}}
                         >
                             <Box
                                 component="img"
@@ -235,26 +244,10 @@ const Footer = () => {
                             />
                         </Box>
                     </Grid>
-
-
                 </Grid>
             </Container>
         </Box>
     );
 };
 
-// Стили для быстрых ссылок
-const footerLinkStyle = {
-    display: 'block',
-    color: '#ffffff',
-    textDecoration: 'none',
-    marginBottom: '8px',
-    fontFamily: 'StyreneA, Arial, sans-serif',
-    fontSize: '16px',
-    fontWeight: 400,
-    '&:hover': {color: '#FFA500'},
-    transition: 'color 0.3s ease',
-};
-
-// Экспортируем компонент
 export default Footer;

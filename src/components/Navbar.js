@@ -14,7 +14,7 @@ import {styled} from '@mui/system';
 import {HashLink} from 'react-router-hash-link';
 import shoppingBagIcon from '../images/shopping-bag-icon.png';
 import logoImage from '../images/logo_fbiism.png';
-import { Link, useLocation } from 'react-router-dom';  // Добавили useLocation
+import {useLocation} from 'react-router-dom';
 
 const CustomFab = styled(Fab)(({theme}) => ({
     transition: 'transform 0.3s ease-in-out',
@@ -23,49 +23,7 @@ const CustomFab = styled(Fab)(({theme}) => ({
         transform: 'scale(1.1)',
         backgroundColor: '#760073',
     },
-
 }));
-
-const scrollToSection = (id) => {
-    const section = document.querySelector(id);
-    if (section) {
-        const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
-        const offset = (window.innerHeight - section.clientHeight) / 2;
-        const targetPosition = sectionPosition - offset;
-
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        const duration = 1000; // Увеличили длительность до 1000 мс для более плавного скроллинга
-        let start = null;
-
-        const step = (timestamp) => {
-            if (!start) start = timestamp;
-            const progress = timestamp - start;
-            const currentPosition = easeInOutQuad(progress, startPosition, distance, duration);
-
-            window.scrollTo(0, currentPosition);
-
-            if (progress < duration) {
-                requestAnimationFrame(step);
-            }
-        };
-
-        requestAnimationFrame(step);
-    }
-};
-
-// Функция для ещё более плавной анимации (ease-in-out, но мягче)
-const easeInOutQuad = (t, b, c, d) => {
-    t /= d / 2;
-    if (t < 1) return c / 2 * t * t + b;
-    t--;
-    return -c / 2 * (t * (t - 2) - 1) + b;
-};
-
-
-
-
-
 
 const CustomTooltip = styled(({className, ...props}) => (
     <Tooltip {...props} classes={{popper: className}}/>
@@ -85,9 +43,58 @@ const CustomTooltip = styled(({className, ...props}) => (
     },
 }));
 
-const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
-    const location = useLocation(); // Получаем текущий путь
-    const isCheckoutPage = location.pathname === '/checkout'; // Проверяем, находимся ли мы на странице оформления заказа
+const navButtonStyle = {
+    fontFamily: 'StyreneA, Arial, sans-serif',
+    fontWeight: 400,
+    textTransform: 'none',
+    color: '#760073',
+    marginRight: '20px',
+    fontSize: '16px',
+    backgroundColor: 'transparent',
+    '&:hover': {
+        backgroundColor: 'transparent',
+        color: '#FFA500',
+    },
+};
+
+const scrollToSection = (id) => {
+    const section = document.querySelector(id);
+    if (section) {
+        const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
+        const offset = (window.innerHeight - section.clientHeight) / 2;
+        const targetPosition = sectionPosition - offset;
+
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 1000;
+        let start = null;
+
+        const step = (timestamp) => {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            const currentPosition = easeInOutQuad(progress, startPosition, distance, duration);
+
+            window.scrollTo(0, currentPosition);
+
+            if (progress < duration) {
+                requestAnimationFrame(step);
+            }
+        };
+
+        requestAnimationFrame(step);
+    }
+};
+
+const easeInOutQuad = (t, b, c, d) => {
+    t /= d / 2;
+    if (t < 1) return (c / 2) * t * t + b;
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
+};
+
+const Navbar = ({cart, onOpenCart, onOpenAskQuestion}) => {
+    const location = useLocation();
+    const isCheckoutPage = location.pathname === '/checkout';
     const totalQuantity = cart.reduce((acc, product) => acc + product.quantity, 0);
     const totalPrice = cart.reduce((total, product) => total + product.price * product.quantity, 0);
 
@@ -119,7 +126,6 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                             alignItems: 'center',
                         }}
                     >
-                        {/* Логотип и название магазина */}
                         <Box
                             sx={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}
                             onClick={handleLogoClick}
@@ -138,8 +144,6 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                                 FBIISM STORE
                             </Typography>
                         </Box>
-
-                        {/* Навигационные ссылки */}
                         <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <Button
                                 component={HashLink}
@@ -147,46 +151,20 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                                 to="/#"
                                 variant="text"
                                 disableRipple
-                                sx={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    textTransform: 'none',
-                                    color: '#760073',
-                                    marginRight: '20px',
-                                    fontSize: '16px',
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        color: '#FFA500',
-                                    },
-                                }}
+                                sx={navButtonStyle}
                             >
                                 Главная
                             </Button>
-
                             <Button
                                 component={HashLink}
                                 smooth
                                 to="/catalog"
                                 variant="text"
                                 disableRipple
-                                sx={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    textTransform: 'none',
-                                    color: '#760073',
-                                    marginRight: '20px',
-                                    fontSize: '16px',
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        color: '#FFA500',
-                                    },
-                                }}
+                                sx={navButtonStyle}
                             >
                                 Каталог
                             </Button>
-
                             <Button
                                 component={HashLink}
                                 smooth
@@ -194,23 +172,10 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                                 variant="text"
                                 disableRipple
                                 onClick={() => scrollToSection("#about")}
-                                sx={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    textTransform: 'none',
-                                    color: '#760073',
-                                    marginRight: '20px',
-                                    fontSize: '16px',
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        color: '#FFA500',
-                                    },
-                                }}
+                                sx={navButtonStyle}
                             >
                                 О нас
                             </Button>
-
                             <Button
                                 component={HashLink}
                                 smooth
@@ -218,48 +183,21 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                                 variant="text"
                                 disableRipple
                                 onClick={() => scrollToSection("#delivery")}
-                                sx={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    textTransform: 'none',
-                                    color: '#760073',
-                                    marginRight: '20px',
-                                    fontSize: '16px',
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        color: '#FFA500',
-                                    },
-                                }}
+                                sx={navButtonStyle}
                             >
                                 Доставка
                             </Button>
-
                             <Button
                                 component={HashLink}
                                 smooth
                                 to="/#contacts"
                                 variant="text"
                                 disableRipple
-                                sx={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 400,
-                                    textTransform: 'none',
-                                    color: '#760073',
-                                    marginRight: '20px',
-                                    fontSize: '16px',
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        color: '#FFA500',
-                                    },
-                                }}
+                                sx={navButtonStyle}
                             >
                                 Контакты
                             </Button>
                         </Box>
-
-                        {/* Кнопка "Задать вопрос" */}
                         <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <Button
                                 variant="contained"
@@ -284,11 +222,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                     </Toolbar>
                 </Container>
             </AppBar>
-
-            {/* Убрали отступ для фиксированной Navbar */}
-            {/* <Toolbar /> */}
-
-            {!isCheckoutPage && ( // Условие для скрытия корзины на странице оформления заказа
+            {!isCheckoutPage && (
                 <Box
                     sx={{
                         position: 'relative',
@@ -330,7 +264,7 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                                     <img
                                         src={shoppingBagIcon}
                                         alt="Корзина"
-                                        style={{ width: '45px', height: '45px' }}
+                                        style={{width: '45px', height: '45px'}}
                                     />
                                 </Badge>
                             </CustomFab>
@@ -338,7 +272,6 @@ const Navbar = ({ cart, onOpenCart, onOpenAskQuestion }) => {
                     )}
                 </Box>
             )}
-
         </>
     );
 };

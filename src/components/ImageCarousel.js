@@ -61,36 +61,19 @@ const ImageCarousel = ({images}) => {
         ],
     };
 
-
     return (
         <div className="carousel-container">
-            <Slider
-                {...mainSettings}
-                ref={mainSlider}
-                className="main-slider"
-            >
+            <Slider {...mainSettings} ref={mainSlider} className="main-slider">
                 {images.map((image, index) => (
                     <div key={index} className="main-slide">
-                        <img
-                            src={image.url}
-                            alt={`Slide ${index + 1}`}
-                            className="main-image"
-                        />
+                        <img src={image.url} alt={`Slide ${index + 1}`} className="main-image"/>
                     </div>
                 ))}
             </Slider>
-            <Slider
-                {...thumbSettings}
-                ref={thumbSlider}
-                className="thumb-slider"
-            >
+            <Slider {...thumbSettings} ref={thumbSlider} className="thumb-slider">
                 {images.map((image, index) => (
                     <div key={index} className="thumb-slide">
-                        <img
-                            src={image.url}
-                            alt={`Thumbnail ${index + 1}`}
-                            className="thumb-image"
-                        />
+                        <img src={image.url} alt={`Thumbnail ${index + 1}`} className="thumb-image"/>
                     </div>
                 ))}
             </Slider>

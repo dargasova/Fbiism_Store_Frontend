@@ -1,6 +1,5 @@
-// src/pages/PaymentPage.js
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import {Box, Typography} from '@mui/material';
 
 const PaymentPage = () => {
     return (
@@ -13,7 +12,7 @@ const PaymentPage = () => {
                 backgroundColor: '#ebebeb',
             }}
         >
-            <Typography variant="h4" color="#760073" sx={{ fontWeight: 700 }}>
+            <Typography variant="h4" color="#760073" sx={{fontWeight: 700}}>
                 Тут будет подключена оплата с помощью ЮКассы
             </Typography>
         </Box>

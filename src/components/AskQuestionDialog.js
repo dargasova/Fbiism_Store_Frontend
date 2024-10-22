@@ -1,78 +1,90 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, Dialog, DialogContent, DialogTitle, DialogActions, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, {useState} from 'react';
+import {
+    TextField,
+    Button,
+    Box,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    DialogActions,
+    Typography
+} from '@mui/material';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#760073', // Корпоративный цвет для фокуса
-        },
+            main: '#760073'
+        }
     },
     components: {
         MuiTextField: {
             defaultProps: {
                 InputLabelProps: {
-                    shrink: true, // Установка для поднятия лейбла
-                },
-            },
+                    shrink: true
+                }
+            }
         },
         MuiInputLabel: {
             styleOverrides: {
                 root: {
                     '&.Mui-focused': {
-                        color: '#760073', // Цвет заголовка при фокусе
-                    },
-                },
-            },
+                        color: '#760073'
+                    }
+                }
+            }
         },
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
                     '&.Mui-focused fieldset': {
-                        borderColor: '#760073', // Цвет рамки при фокусе
-                    },
-                },
-            },
-        },
-    },
+                        borderColor: '#760073'
+                    }
+                }
+            }
+        }
+    }
 });
 
-const AskQuestionDialog = ({ open, onClose }) => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [question, setQuestion] = useState('');
+const AskQuestionDialog = ({open, onClose}) => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        question: ''
+    });
     const [error, setError] = useState('');
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
 
+    const handleChange = (e) => {
+        setFormData((prev) => ({...prev, [e.target.name]: e.target.value}));
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const {name, email, question} = formData;
 
         if (!name || !email || !question) {
             setError('Пожалуйста, заполните все поля.');
             return;
         }
 
-        const formData = { name, email, question };
-
         try {
             const response = await fetch('http://localhost:5000/send-question', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
             });
 
             if (response.ok) {
                 setOpenSuccessDialog(true);
-                setName('');
-                setEmail('');
-                setQuestion('');
+                setFormData({name: '', email: '', question: ''});
                 setError('');
             } else {
                 setError('Произошла ошибка. Попробуйте снова.');
             }
-        } catch (error) {
-            console.error('Ошибка отправки:', error);
+        } catch (err) {
+            console.error('Ошибка отправки:', err);
             setError('Произошла ошибка. Попробуйте снова.');
         }
     };
@@ -92,16 +104,16 @@ const AskQuestionDialog = ({ open, onClose }) => {
                 PaperProps={{
                     style: {
                         borderRadius: '15px',
-                        padding: '20px',
-                    },
+                        padding: '20px'
+                    }
                 }}
             >
                 <DialogTitle
                     sx={{
                         fontWeight: 700,
                         textAlign: 'center',
-                        fontSize: { xs: '38px', md: '46px' },
-                        color: '#760073',
+                        fontSize: {xs: '38px', md: '46px'},
+                        color: '#760073'
                     }}
                 >
                     Задать вопрос
@@ -110,14 +122,15 @@ const AskQuestionDialog = ({ open, onClose }) => {
                 <DialogContent>
                     <Typography
                         variant="body1"
-                        style={{
+                        sx={{
                             textAlign: 'center',
                             fontWeight: 400,
                             marginBottom: '20px',
-                            fontSize: '20px',
+                            fontSize: '20px'
                         }}
                     >
-                        Ваше обращение будет отправлено на нашу почту, и мы непременно свяжемся с вами в ближайшее время!
+                        Ваше обращение будет отправлено на нашу почту, и мы непременно свяжемся с вами в ближайшее
+                        время!
                     </Typography>
 
                     {error && (
@@ -126,15 +139,10 @@ const AskQuestionDialog = ({ open, onClose }) => {
                                 backgroundColor: '#ffcccc',
                                 padding: '10px',
                                 marginBottom: '20px',
-                                borderRadius: '4px',
+                                borderRadius: '4px'
                             }}
                         >
-                            <Typography
-                                color="error"
-                                style={{
-                                    fontWeight: 400,
-                                }}
-                            >
+                            <Typography color="error" sx={{fontWeight: 400}}>
                                 {error}
                             </Typography>
                         </Box>
@@ -145,8 +153,9 @@ const AskQuestionDialog = ({ open, onClose }) => {
                             variant="outlined"
                             fullWidth
                             margin="normal"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
                             required
                         />
 
@@ -155,8 +164,9 @@ const AskQuestionDialog = ({ open, onClose }) => {
                             variant="outlined"
                             fullWidth
                             margin="normal"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             required
                         />
 
@@ -167,8 +177,9 @@ const AskQuestionDialog = ({ open, onClose }) => {
                             rows={4}
                             fullWidth
                             margin="normal"
-                            value={question}
-                            onChange={(e) => setQuestion(e.target.value)}
+                            name="question"
+                            value={formData.question}
+                            onChange={handleChange}
                             required
                         />
 
@@ -183,10 +194,10 @@ const AskQuestionDialog = ({ open, onClose }) => {
                                 marginTop: '20px',
                                 padding: '10px 0',
                                 borderRadius: '30px',
-                                fontSize: { xs: '8px', md: '16px' },
+                                fontSize: {xs: '8px', md: '16px'},
                                 '&:hover': {
-                                    backgroundColor: '#59005a',
-                                },
+                                    backgroundColor: '#59005a'
+                                }
                             }}
                         >
                             Отправить
@@ -201,8 +212,8 @@ const AskQuestionDialog = ({ open, onClose }) => {
                 PaperProps={{
                     style: {
                         borderRadius: '15px',
-                        paddingBottom: '20px',
-                    },
+                        paddingBottom: '20px'
+                    }
                 }}
             >
                 <Box
@@ -212,15 +223,15 @@ const AskQuestionDialog = ({ open, onClose }) => {
                         padding: '20px',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'center'
                     }}
                 >
-                    <CheckCircleOutlineIcon sx={{ fontSize: 40, mr: 1 }} />
+                    <CheckCircleOutlineIcon sx={{fontSize: 40, mr: 1}}/>
                     <DialogTitle
                         sx={{
                             color: 'white',
                             fontWeight: 700,
-                            textAlign: 'center',
+                            textAlign: 'center'
                         }}
                     >
                         Сообщение отправлено!
@@ -233,14 +244,14 @@ const AskQuestionDialog = ({ open, onClose }) => {
                         sx={{
                             textAlign: 'center',
                             fontWeight: 400,
-                            mb: 2,
+                            mb: 0
                         }}
                     >
                         Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.
                     </Typography>
                 </DialogContent>
 
-                <DialogActions sx={{ justifyContent: 'center' }}>
+                <DialogActions sx={{justifyContent: 'center'}}>
                     <Button
                         onClick={handleCloseSuccessDialog}
                         variant="contained"
@@ -252,8 +263,8 @@ const AskQuestionDialog = ({ open, onClose }) => {
                             padding: '8px 30px',
                             borderRadius: '30px',
                             '&:hover': {
-                                backgroundColor: '#59005a',
-                            },
+                                backgroundColor: '#59005a'
+                            }
                         }}
                     >
                         Закрыть
