@@ -1,5 +1,4 @@
-// CartSidebar.jsx
-import React, {useEffect, useCallback, useMemo} from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import {
     Typography,
     Box,
@@ -10,10 +9,10 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
+const CartSidebar = React.memo(({ cart, setCart, isOpen, onClose }) => {
     const navigate = useNavigate();
 
     const colorTranslations = useMemo(() => ({
@@ -41,7 +40,7 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                         item.selectedColor === selectedColor &&
                         item.selectedSize === selectedSize
                     ) {
-                        return {...item, quantity: item.quantity - 1};
+                        return { ...item, quantity: item.quantity - 1 };
                     }
                     return item;
                 })
@@ -59,7 +58,7 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                     item.selectedColor === selectedColor &&
                     item.selectedSize === selectedSize
                 ) {
-                    return {...item, quantity: item.quantity + 1};
+                    return { ...item, quantity: item.quantity + 1 };
                 }
                 return item;
             });
@@ -93,7 +92,7 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
         <Drawer anchor="right" open={isOpen} onClose={onClose}>
             <Box
                 sx={{
-                    width: {xs: '100%', sm: '530px'},
+                    width: { xs: '100%', sm: '530px' },
                     height: '100%',
                     backgroundColor: '#fff',
                     boxShadow: '-2px 0 5px rgba(0,0,0,0.5)',
@@ -116,8 +115,8 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                     >
                         Ваш заказ
                     </Typography>
-                    <IconButton onClick={onClose} sx={{width: '40px', height: '40px'}}>
-                        <CloseIcon sx={{fontSize: '30px'}}/>
+                    <IconButton onClick={onClose} sx={{ width: '40px', height: '40px' }}>
+                        <CloseIcon sx={{ fontSize: '30px' }} />
                     </IconButton>
                 </Box>
                 {cart.length === 0 ? (
@@ -133,17 +132,14 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                     </Typography>
                 ) : (
                     cart.map((product) => {
-                        let mainImage;
-                        if (product.id === 1) {
-                            mainImage = product.images[product.images.length - 1]?.url;
-                        } else {
-                            mainImage = product.selectedColor
-                                ? product.images.find(img => img.color === product.selectedColor)?.url || product.images[0]?.url
-                                : product.images[0]?.url;
-                        }
+                        const baseUrl = 'https://localhost:8443/uploads/images/';
+                        const mainImage = product.selectedColor
+                            ? product.images.find(img => img.color === product.selectedColor)?.url || product.images[0]?.url
+                            : product.images[0]?.url;
+
+                        const fullImageUrl = mainImage ? baseUrl + mainImage.split('/').pop() : ''; // Формируем полный URL
 
                         const translatedColor = colorTranslations[product.selectedColor] || product.selectedColor;
-
                         const productTotal = product.price * product.quantity;
 
                         return (
@@ -154,10 +150,10 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                                 p={2}
                                 borderBottom="1px solid #ccc"
                             >
-                                {mainImage && (
+                                {fullImageUrl && (
                                     <Box
                                         component="img"
-                                        src={mainImage}
+                                        src={fullImageUrl}
                                         alt={product.name}
                                         sx={{
                                             width: '80px',
@@ -197,7 +193,7 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                                         Размер: {product.selectedSize || 'ONE SIZE'}
                                     </Typography>
                                 </Box>
-                                <Box display="flex" alignItems="center" sx={{gap: '10px'}}>
+                                <Box display="flex" alignItems="center" sx={{ gap: '10px' }}>
                                     <IconButton
                                         onClick={() => handleDecreaseQuantity(product.id, product.selectedColor, product.selectedSize)}
                                         sx={{
@@ -207,7 +203,7 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                                             borderRadius: '50%',
                                         }}
                                     >
-                                        <RemoveIcon sx={{fontSize: '12px'}}/>
+                                        <RemoveIcon sx={{ fontSize: '12px' }} />
                                     </IconButton>
                                     <Typography
                                         sx={{
@@ -226,7 +222,7 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                                             borderRadius: '50%',
                                         }}
                                     >
-                                        <AddIcon sx={{fontSize: '12px'}}/>
+                                        <AddIcon sx={{ fontSize: '12px' }} />
                                     </IconButton>
                                 </Box>
                                 <Typography
@@ -249,7 +245,7 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
                                         marginLeft: '20px',
                                     }}
                                 >
-                                    <CloseIcon sx={{fontSize: '12px'}}/>
+                                    <CloseIcon sx={{ fontSize: '12px' }} />
                                 </IconButton>
                             </Box>
                         );
@@ -299,7 +295,6 @@ const CartSidebar = React.memo(({cart, setCart, isOpen, onClose}) => {
             </Box>
         </Drawer>
     );
-
 });
 
 CartSidebar.propTypes = {

@@ -55,34 +55,15 @@ const CatalogPage = ({ products, loading = false, error = '' }) => {
     return (
         <Container
             maxWidth="lg"
-            sx={{
-                padding: '30px 0 24px 0',
-                backgroundColor: '#fff',
-            }}
+            sx={{ padding: '30px 0 24px 0', backgroundColor: '#fff' }}
         >
-            <Box
-                sx={{
-                    marginBottom: 4,
-                    textAlign: 'left',
-                    marginTop: '20px',
-                }}
-            >
-                <Typography
-                    variant="h3"
-                    gutterBottom
-                    sx={{
-                        fontSize: { xs: '38px', md: '46px' },
-                        fontWeight: 700,
-                        color: primaryColor,
-                    }}
-                >
+            <Box sx={{ marginBottom: 4, textAlign: 'left', marginTop: '20px' }}>
+                <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '38px', md: '46px' }, fontWeight: 700, color: primaryColor }}>
                     Каталог
                 </Typography>
-
                 <Typography variant="subtitle1" sx={{ fontSize: '20px', marginBottom: 4 }}>
                     Хотим каждую из этих вещей! Себе, одногруппникам и друзьям.
                 </Typography>
-
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <StyledFormControl variant="outlined" size="small">
                         <Select
@@ -128,7 +109,6 @@ const CatalogPage = ({ products, loading = false, error = '' }) => {
             </Fade>
         </Container>
     );
-
 };
 
 CatalogPage.propTypes = {
@@ -136,6 +116,7 @@ CatalogPage.propTypes = {
         PropTypes.shape({
             id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             price: PropTypes.number.isRequired,
+            images: PropTypes.array.isRequired, // Убедитесь, что вы добавили поле images
         })
     ).isRequired,
     loading: PropTypes.bool,

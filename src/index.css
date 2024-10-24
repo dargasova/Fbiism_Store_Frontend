@@ -2,25 +2,44 @@ html {
     overflow-y: scroll;
 }
 
-/* Общие стили для всех страниц */
 body {
     margin: 0;
     font-family: 'StyreneA', Arial, sans-serif;
-    -webkit-font-smoothing: antialiased; /* Улучшение рендеринга шрифтов для WebKit-браузеров */
-    -moz-osx-font-smoothing: grayscale; /* Улучшение рендеринга шрифтов для Firefox на macOS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Стили для кода (если используется) */
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Стили для центрирования секций */
 .centered-section {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Высота экрана */
+    min-height: 100vh;
     text-align: center;
+}
+
+/* Плавная анимация биения сердца с меньшим увеличением */
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+    15% {
+        transform: scale(1.05); /* Первый более аккуратный удар */
+    }
+    30% {
+        transform: scale(1); /* Возвращение после первого удара */
+    }
+    45% {
+        transform: scale(1.08); /* Второй удар, чуть сильнее */
+    }
+    60% {
+        transform: scale(1); /* Возвращение после второго удара */
+    }
+    100% {
+        transform: scale(1); /* Пауза перед повтором анимации */
+    }
 }
 

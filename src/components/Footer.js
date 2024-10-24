@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Typography, Box, Link, Grid} from '@mui/material';
+import { Container, Typography, Box, Link, Grid } from '@mui/material';
 import logo from '../images/logo_fbiism.png';
 import telegramIcon from '../images/telegram.png';
 import vkIcon from '../images/vk.png';
@@ -14,7 +14,7 @@ const footerLinkStyle = {
     fontFamily: 'StyreneA, Arial, sans-serif',
     fontSize: '16px',
     fontWeight: 400,
-    '&:hover': {color: '#FFA500'},
+    '&:hover': { color: '#FFA500' },
     transition: 'color 0.3s ease',
 };
 
@@ -63,12 +63,17 @@ const Footer = () => {
                 paddingTop: '45px',
                 paddingBottom: '30px',
                 marginTop: 'auto',
+                borderTopLeftRadius: '60px', // Округление верхнего левого угла
+                borderTopRightRadius: '60px', // Округление верхнего правого угла
+                width: '100%', // Полная ширина
+                maxWidth: '1550px', // Установка максимальной ширины футера
+                margin: '0 auto', // Центрирование футера
             }}
             id="contacts"
         >
             <Container maxWidth="lg">
                 <Grid container spacing={4} alignItems="flex-start">
-                    <Grid item xs={12} md={3} sx={{position: 'relative', height: '200px'}}>
+                    <Grid item xs={12} md={3} sx={{ position: 'relative', height: '200px' }}>
                         <Box
                             sx={{
                                 position: 'absolute',
@@ -79,37 +84,46 @@ const Footer = () => {
                             }}
                         >
                             <Box
-                                component="img"
-                                src={logo}
-                                alt="FBIISM_STORE Logo"
                                 sx={{
-                                    width: '40px',
-                                    height: '40px',
-                                    marginRight: '10px',
-                                }}
-                            />
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    fontFamily: 'StyreneA, Arial, sans-serif',
-                                    fontWeight: 700,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    marginLeft: '30px',  // Сдвиг логотипа и текста вместе на 40px вправо
                                 }}
                             >
-                                FBIISM STORE
-                            </Typography>
+                                <Box
+                                    component="img"
+                                    src={logo}
+                                    alt="FBIISM_STORE Logo"
+                                    sx={{
+                                        width: '40px',
+                                        height: '40px',
+                                        marginRight: '10px',
+                                    }}
+                                />
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontFamily: 'StyreneA, Arial, sans-serif',
+                                        fontWeight: 700,
+                                    }}
+                                >
+                                    FBIISM STORE
+                                </Typography>
+                            </Box>
+
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} md={9} sx={{position: 'relative'}}>
+                    <Grid item xs={12} md={9} sx={{ position: 'relative' }}>
                         <Box
                             sx={{
                                 position: 'relative',
-                                marginLeft: {xs: '0px', md: '-30px'},
+                                marginLeft: { xs: '0px', md: '-30px' },
                             }}
                         >
                             <Grid container spacing={4}>
                                 <Grid item xs={12} md={6}>
-                                    <Box textAlign={{xs: 'center', md: 'left'}}>
+                                    <Box textAlign={{ xs: 'center', md: 'left' }}>
                                         <Typography
                                             variant="h6"
                                             gutterBottom
@@ -174,7 +188,7 @@ const Footer = () => {
                                 </Grid>
 
                                 <Grid item xs={12} md={6}>
-                                    <Box textAlign={{xs: 'center', md: 'left'}}>
+                                    <Box textAlign={{ xs: 'center', md: 'left' }}>
                                         <Typography
                                             variant="h6"
                                             gutterBottom
@@ -190,17 +204,17 @@ const Footer = () => {
                                         <Box>
                                             <Link
                                                 onClick={() => scrollToSection('#home')}
-                                                sx={{...footerLinkStyle, marginBottom: '20px', cursor: 'pointer'}}
+                                                sx={{ ...footerLinkStyle, marginBottom: '20px', cursor: 'pointer' }}
                                             >
                                                 Главная
                                             </Link>
                                             <Link
                                                 onClick={() => scrollToSection('#about')}
-                                                sx={{...footerLinkStyle, marginBottom: '20px', cursor: 'pointer'}}
+                                                sx={{ ...footerLinkStyle, marginBottom: '20px', cursor: 'pointer' }}
                                             >
                                                 О нас
                                             </Link>
-                                            <Link href="/catalog" sx={{...footerLinkStyle, marginBottom: '20px'}}>
+                                            <Link href="/catalog" sx={{ ...footerLinkStyle, marginBottom: '20px' }}>
                                                 Каталог
                                             </Link>
                                         </Box>
@@ -210,12 +224,12 @@ const Footer = () => {
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} sx={{textAlign: 'right', marginTop: '-202px', transform: 'translateX(150px)'}}>
+                    <Grid item xs={12} sx={{ textAlign: 'right', marginTop: '-202px', transform: 'translateX(120px)' }}>
                         <Box
                             component="a"
                             href="https://t.me/bi_mephi"
                             target="_blank"
-                            sx={{display: 'inline-block', marginRight: '20px'}}
+                            sx={{ display: 'inline-block', marginRight: '20px' }}
                         >
                             <Box
                                 component="img"
@@ -231,7 +245,7 @@ const Footer = () => {
                             component="a"
                             href="https://vk.com/fbiuks"
                             target="_blank"
-                            sx={{display: 'inline-block', marginRight: '0px'}}
+                            sx={{ display: 'inline-block', marginRight: '0px' }}
                         >
                             <Box
                                 component="img"

@@ -1,8 +1,9 @@
 // HomePage.jsx
-import React from 'react';
-import { Container, Typography, Button, Box, Divider, Grid } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Container, Typography, Button, Box, Divider, Grid, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Player } from '@lottiefiles/react-lottie-player';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import product1 from '../images/product1_colorcream_image4_photoroom.png';
 import product2 from '../images/product2_colorblack_image1_photoroom.png';
 import product3 from '../images/product3_colorblack_image1_photoroom.png';
@@ -18,13 +19,55 @@ const backgroundColor = '#ebebeb';
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const [showScroll, setShowScroll] = useState(false);
 
     const handleCatalogClick = () => {
         navigate('/catalog');
     };
 
+    const checkScrollTop = () => {
+        if (!showScroll && window.pageYOffset > 300) {
+            setShowScroll(true);
+        } else if (showScroll && window.pageYOffset <= 300) {
+            setShowScroll(false);
+        }
+    };
+
+    const scrollTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', checkScrollTop);
+        return () => {
+            window.removeEventListener('scroll', checkScrollTop);
+        };
+    }, [showScroll]);
+
     return (
         <Box sx={{ width: '100%', backgroundColor, padding: 0 }}>
+            {/* Стрелка для возврата наверх */}
+            <IconButton
+                onClick={scrollTop}
+                sx={{
+                    position: 'fixed',
+                    bottom: '30px',
+                    right: '18px',
+                    backgroundColor: primaryColor,
+                    color: '#fff',
+                    zIndex: 1000,
+                    opacity: showScroll ? 1 : 0,
+                    visibility: showScroll ? 'visible' : 'hidden',
+                    transition: 'opacity 0.3s, visibility 0.3s',
+                    '&:hover': {
+                        backgroundColor: '#5a0060',
+                    },
+                }}
+            >
+                <ArrowUpwardIcon />
+            </IconButton>
+
+            {/* Основная часть страницы */}
             <Box
                 id="home"
                 sx={{
@@ -32,7 +75,6 @@ const HomePage = () => {
                     width: '100%',
                     height: '700px',
                     overflow: 'hidden',
-                    scrollMarginTop: '100px',
                     display: 'flex',
                     alignItems: 'center',
                 }}
@@ -76,8 +118,8 @@ const HomePage = () => {
                                 </Button>
                             </Box>
                         </Grid>
-
                         <Grid item xs={12} md={6}>
+                            {/* Изображения */}
                             <Box sx={{ position: 'relative', height: '100%' }}>
                                 <img
                                     src={product1}
@@ -139,7 +181,6 @@ const HomePage = () => {
                     </Grid>
                 </Container>
             </Box>
-
             <Divider
                 sx={{
                     backgroundColor: primaryColor,
@@ -147,6 +188,7 @@ const HomePage = () => {
                     borderBottomWidth: 0,
                 }}
             />
+            {/* Остальная часть страницы */}
             <Box
                 sx={{
                     backgroundColor: '#fff',
@@ -175,7 +217,7 @@ const HomePage = () => {
                                     fontSize: { xs: '38px', md: '46px' },
                                     fontWeight: 700,
                                     color: primaryColor,
-                                    marginBottom: '20px',
+                                    marginBottom: '50px',
                                 }}
                             >
                                 О нас
@@ -233,14 +275,14 @@ const HomePage = () => {
                                 src={hearts}
                                 alt="О нас"
                                 style={{
-                                    width: '320px',
+                                    width: '335px',
                                     height: 'auto',
                                     transform: 'scaleX(-1)',
                                     position: 'relative',
                                     top: '-160px',
                                     left: '490px',
-                                    marginRight: '20px',
-                                    animation: 'heartbeat 2s ease-in-out infinite',
+                                    marginRight: '15px',
+                                    animation: 'heartbeat 1.5s ease-in-out infinite', // Исправлена CSS-анимация
                                 }}
                             />
                             <img
@@ -269,6 +311,7 @@ const HomePage = () => {
                             />
                         </Box>
                     </Grid>
+
                 </Grid>
             </Box>
 

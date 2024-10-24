@@ -32,12 +32,18 @@ const ProductCard = React.memo(({ product }) => {
     }, [product.price]);
 
     const mainImage = useMemo(() => {
+        if (product.images.length === 0) return null;
+
+        // Используем правильный URL, меняя http на https и порт на 8443
+        const baseUrl = 'https://localhost:8443/uploads/images/';
+
         if (Number(product.id) === 1) {
-            return product.images[product.images.length - 1]?.url;
+            return baseUrl + product.images[product.images.length - 1].url.split('/').pop();
         }
+
         return product.selectedColor
-            ? product.images.find((img) => img.color === product.selectedColor)?.url || product.images[0]?.url
-            : product.images[0]?.url;
+            ? baseUrl + product.images.find((img) => img.color === product.selectedColor)?.url.split('/').pop() || baseUrl + product.images[0].url.split('/').pop()
+            : baseUrl + product.images[0].url.split('/').pop();
     }, [product.id, product.images, product.selectedColor]);
 
     return (
@@ -112,7 +118,7 @@ const ProductCard = React.memo(({ product }) => {
                         </Box>
                     )}
                 </Box>
-                <CardContent sx={{ padding: '16px 12px 16px 10px', textAlign: 'left' }}>
+                <CardContent sx={{ padding: '16px 12px 16px 16px', textAlign: 'left' }}>
                     <Typography
                         variant="h6"
                         sx={{

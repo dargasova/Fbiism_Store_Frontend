@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useMemo, useCallback} from 'react';
-import {useParams} from 'react-router-dom';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import {
     Container,
     Typography,
@@ -29,8 +29,8 @@ const COLOR_HEX = {
     white: '#FFFFFF',
 };
 
-const ProductDetailsPage = ({onAddToCart}) => {
-    const {id} = useParams();
+const ProductDetailsPage = ({ onAddToCart }) => {
+    const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedColor, setSelectedColor] = useState('');
@@ -84,30 +84,34 @@ const ProductDetailsPage = ({onAddToCart}) => {
 
     const imagesToDisplay = useMemo(() => {
         if (!product) return [];
+        const baseUrl = 'https://localhost:8443/uploads/images/'; // Используйте корректный базовый URL
         const filtered = product.images.filter((image) => image.color === selectedColor);
-        return id === '1' ? [...filtered].reverse() : filtered;
-    }, [product, selectedColor, id]);
+        return filtered.map(img => ({
+            ...img,
+            url: baseUrl + img.url.split('/').pop() // Создаем полный URL для каждого изображения
+        }));
+    }, [product, selectedColor]);
 
     return (
-        <Container sx={{mt: 4, minHeight: '80vh'}}>
+        <Container sx={{ mt: 4, minHeight: '80vh' }}>
             <Fade in={!loading} timeout={500}>
                 <Box>
                     {product ? (
                         <Grid container spacing={4}>
                             <Grid item xs={12} md={6}>
-                                <Box sx={{mt: 4, ml: '-130px'}}>
-                                    <ImageCarousel images={imagesToDisplay}/>
+                                <Box sx={{ mt: 4, ml: '-130px' }}>
+                                    <ImageCarousel images={imagesToDisplay} />
                                 </Box>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Box sx={{ml: '-40px'}}>
-                                    <Typography variant="h4" sx={{fontWeight: 700, color: '#760073', mt: 5}}>
+                                <Box sx={{ ml: '-40px' }}>
+                                    <Typography variant="h4" sx={{ fontWeight: 700, color: '#760073', mt: 5 }}>
                                         {product.name}
                                     </Typography>
-                                    <Typography variant="h5" sx={{fontWeight: 500, mt: 2, color: '#760073'}}>
+                                    <Typography variant="h5" sx={{ fontWeight: 500, mt: 2, color: '#760073' }}>
                                         {formattedPrice}
                                     </Typography>
-                                    <FormControl fullWidth margin="normal" sx={{mt: 3, width: '88%'}}>
+                                    <FormControl fullWidth margin="normal" sx={{ mt: 3, width: '88%' }}>
                                         <InputLabel id="color-label">Цвет</InputLabel>
                                         <Select
                                             labelId="color-label"
@@ -123,7 +127,7 @@ const ProductDetailsPage = ({onAddToCart}) => {
                                                 borderRadius: '8px',
                                                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                                             }}
-                                            input={<OutlinedInput label="Цвет"/>}
+                                            input={<OutlinedInput label="Цвет" />}
                                         >
                                             {product.colors.map((color) => (
                                                 <MenuItem key={color} value={color}>
@@ -142,7 +146,7 @@ const ProductDetailsPage = ({onAddToCart}) => {
                                             ))}
                                         </Select>
                                     </FormControl>
-                                    <FormControl fullWidth margin="normal" sx={{mt: 3, width: '88%'}}>
+                                    <FormControl fullWidth margin="normal" sx={{ mt: 3, width: '88%' }}>
                                         <InputLabel id="size-label">Размер</InputLabel>
                                         <Select
                                             labelId="size-label"
@@ -154,7 +158,7 @@ const ProductDetailsPage = ({onAddToCart}) => {
                                                 borderRadius: '8px',
                                                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                                             }}
-                                            input={<OutlinedInput label="Размер"/>}
+                                            input={<OutlinedInput label="Размер" />}
                                         >
                                             {product.sizes.length > 0 ? (
                                                 product.sizes.map((size) => (
@@ -167,7 +171,7 @@ const ProductDetailsPage = ({onAddToCart}) => {
                                             )}
                                         </Select>
                                     </FormControl>
-                                    <Box sx={{mt: 4, display: 'flex', alignItems: 'center', width: '80%'}}>
+                                    <Box sx={{ mt: 4, display: 'flex', alignItems: 'center', width: '80%' }}>
                                         <Button
                                             variant="outlined"
                                             onClick={() => handleQuantityChange(-1)}
@@ -185,7 +189,7 @@ const ProductDetailsPage = ({onAddToCart}) => {
                                         >
                                             -
                                         </Button>
-                                        <Typography variant="body1" sx={{mx: 2, width: '60px', textAlign: 'center'}}>
+                                        <Typography variant="body1" sx={{ mx: 2, width: '60px', textAlign: 'center' }}>
                                             {quantity}
                                         </Typography>
                                         <Button
@@ -208,7 +212,7 @@ const ProductDetailsPage = ({onAddToCart}) => {
                                     </Box>
                                     <Button
                                         variant="contained"
-                                        startIcon={<AddShoppingCartIcon/>}
+                                        startIcon={<AddShoppingCartIcon />}
                                         sx={{
                                             mt: 4,
                                             py: 1.5,
@@ -220,16 +224,16 @@ const ProductDetailsPage = ({onAddToCart}) => {
                                             width: '88%',
                                         }}
                                         onClick={() => {
-                                            onAddToCart({...product, selectedColor, selectedSize, quantity});
+                                            onAddToCart({ ...product, selectedColor, selectedSize, quantity });
                                         }}
                                     >
                                         В корзину
                                     </Button>
-                                    <Box sx={{mt: 4}}>
-                                        <Typography variant="h6" sx={{fontWeight: 600, mb: 2, color: '#760073'}}>
+                                    <Box sx={{ mt: 4 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#760073' }}>
                                             Описание
                                         </Typography>
-                                        <Typography variant="body1" sx={{whiteSpace: 'pre-line', color: '#555'}}>
+                                        <Typography variant="body1" sx={{ whiteSpace: 'pre-line', color: '#555' }}>
                                             {product.description}
                                         </Typography>
                                     </Box>
@@ -237,7 +241,7 @@ const ProductDetailsPage = ({onAddToCart}) => {
                             </Grid>
                         </Grid>
                     ) : (
-                        <Typography variant="h6" sx={{fontWeight: 400}}>
+                        <Typography variant="h6" sx={{ fontWeight: 400 }}>
                             Продукт не найден.
                         </Typography>
                     )}
