@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, {useState, useMemo} from 'react';
 import {
     Container,
     Grid,
@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 
 const primaryColor = '#760073';
 
-const StyledFormControl = styled(FormControl)(({ theme }) => ({
+const StyledFormControl = styled(FormControl)(({theme}) => ({
     minWidth: 200,
     marginBottom: theme.spacing(2),
     '& .MuiOutlinedInput-root': {
@@ -43,7 +43,7 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
     },
 }));
 
-const CatalogPage = ({ products, loading = false, error = '' }) => {
+const CatalogPage = ({products, loading = false, error = ''}) => {
     const [sortDirection, setSortDirection] = useState('asc');
 
     const sortedProducts = useMemo(() => {
@@ -55,23 +55,24 @@ const CatalogPage = ({ products, loading = false, error = '' }) => {
     return (
         <Container
             maxWidth="lg"
-            sx={{ padding: '30px 0 24px 0', backgroundColor: '#fff' }}
+            sx={{padding: '30px 0 24px 0', backgroundColor: '#fff'}}
         >
-            <Box sx={{ marginBottom: 4, textAlign: 'left', marginTop: '20px' }}>
-                <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '38px', md: '46px' }, fontWeight: 700, color: primaryColor }}>
+            <Box sx={{marginBottom: 4, textAlign: 'left', marginTop: '20px'}}>
+                <Typography variant="h3" gutterBottom
+                            sx={{fontSize: {xs: '38px', md: '46px'}, fontWeight: 700, color: primaryColor}}>
                     Каталог
                 </Typography>
-                <Typography variant="subtitle1" sx={{ fontSize: '20px', marginBottom: 4 }}>
-                    Хотим каждую из этих вещей! Себе, одногруппникам и друзьям.
+                <Typography variant="subtitle1" sx={{fontSize: '20px', marginBottom: 4}}>
+                    Хотим каждую из этих вещей! Себе, одногруппникам и друзьям факультета.
                 </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
                     <StyledFormControl variant="outlined" size="small">
                         <Select
                             value={sortDirection}
                             onChange={(e) => setSortDirection(e.target.value)}
                             IconComponent={sortDirection === 'asc' ? ArrowDropUpIcon : ArrowDropDownIcon}
                             displayEmpty
-                            inputProps={{ 'aria-label': 'Сортировка по цене' }}
+                            inputProps={{'aria-label': 'Сортировка по цене'}}
                         >
                             <MenuItem value="asc">Цена по возрастанию</MenuItem>
                             <MenuItem value="desc">Цена по убыванию</MenuItem>
@@ -81,19 +82,19 @@ const CatalogPage = ({ products, loading = false, error = '' }) => {
             </Box>
 
             {loading && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
-                    <CircularProgress color="primary" />
+                <Box sx={{display: 'flex', justifyContent: 'center', marginBottom: 4}}>
+                    <CircularProgress color="primary"/>
                 </Box>
             )}
 
             {error && (
-                <Typography variant="h6" color="error" sx={{ textAlign: 'center', marginBottom: 4 }}>
+                <Typography variant="h6" color="error" sx={{textAlign: 'center', marginBottom: 4}}>
                     {error}
                 </Typography>
             )}
 
             {!loading && !error && products.length === 0 && (
-                <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 4 }}>
+                <Typography variant="h6" sx={{textAlign: 'center', marginTop: 4}}>
                     Нет доступных товаров.
                 </Typography>
             )}
@@ -102,7 +103,7 @@ const CatalogPage = ({ products, loading = false, error = '' }) => {
                 <Grid container spacing={4}>
                     {sortedProducts.map((product) => (
                         <Grid item xs={12} sm={6} md={4} lg={4} key={product.id}>
-                            <ProductCard product={product} />
+                            <ProductCard product={product}/>
                         </Grid>
                     ))}
                 </Grid>
@@ -116,7 +117,7 @@ CatalogPage.propTypes = {
         PropTypes.shape({
             id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             price: PropTypes.number.isRequired,
-            images: PropTypes.array.isRequired, // Убедитесь, что вы добавили поле images
+            images: PropTypes.array.isRequired,
         })
     ).isRequired,
     loading: PropTypes.bool,

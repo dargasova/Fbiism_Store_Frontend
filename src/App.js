@@ -96,6 +96,11 @@ const App = () => {
         setIsAskQuestionOpen(false);
     }, []);
 
+    const clearCart = useCallback(() => {
+        setCart([]);
+        localStorage.removeItem('cart');
+    }, []);
+
     const location = useLocation();
     const isCheckoutPage = location.pathname === '/checkout';
 
@@ -120,7 +125,7 @@ const App = () => {
                     />
                     <Route
                         path="/checkout"
-                        element={<CheckoutPage cart={cart}/>}
+                        element={<CheckoutPage cart={cart} clearCart={clearCart}/>}
                     />
                     <Route
                         path="/payment"

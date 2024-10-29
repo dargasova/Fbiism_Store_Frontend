@@ -69,6 +69,12 @@ const AskQuestionDialog = ({open, onClose}) => {
             return;
         }
 
+        const emailRegex = /^\S+@\S+\.\S+$/;
+        if (!emailRegex.test(email)) {
+            setError('Пожалуйста, введите корректный email адрес.');
+            return;
+        }
+
         try {
             const response = await fetch('http://localhost:5000/send-question', {
                 method: 'POST',

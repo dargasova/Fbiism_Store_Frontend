@@ -1,5 +1,4 @@
-// ProductCard.jsx
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import {
     Card,
     CardContent,
@@ -9,13 +8,13 @@ import {
     CardActionArea,
     Badge,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PropTypes from 'prop-types';
 
 const primaryColor = '#760073';
 
-const ProductCard = React.memo(({ product }) => {
+const ProductCard = React.memo(({product}) => {
     const navigate = useNavigate();
 
     const handleViewDetails = () => {
@@ -34,12 +33,7 @@ const ProductCard = React.memo(({ product }) => {
     const mainImage = useMemo(() => {
         if (product.images.length === 0) return null;
 
-        // Используем правильный URL, меняя http на https и порт на 8443
         const baseUrl = 'https://localhost:8443/uploads/images/';
-
-        if (Number(product.id) === 1) {
-            return baseUrl + product.images[product.images.length - 1].url.split('/').pop();
-        }
 
         return product.selectedColor
             ? baseUrl + product.images.find((img) => img.color === product.selectedColor)?.url.split('/').pop() || baseUrl + product.images[0].url.split('/').pop()
@@ -65,12 +59,12 @@ const ProductCard = React.memo(({ product }) => {
         >
             {product.isFavorite && (
                 <Badge
-                    badgeContent={<FavoriteIcon color="error" />}
-                    sx={{ position: 'absolute', top: 16, right: 16 }}
+                    badgeContent={<FavoriteIcon color="error"/>}
+                    sx={{position: 'absolute', top: 16, right: 16}}
                 />
             )}
 
-            <CardActionArea onClick={handleViewDetails} sx={{ flexGrow: 1 }}>
+            <CardActionArea onClick={handleViewDetails} sx={{flexGrow: 1}}>
                 <Box
                     sx={{
                         position: 'relative',
@@ -118,7 +112,7 @@ const ProductCard = React.memo(({ product }) => {
                         </Box>
                     )}
                 </Box>
-                <CardContent sx={{ padding: '16px 12px 16px 16px', textAlign: 'left' }}>
+                <CardContent sx={{padding: '16px 12px 16px 16px', textAlign: 'left'}}>
                     <Typography
                         variant="h6"
                         sx={{
@@ -135,7 +129,7 @@ const ProductCard = React.memo(({ product }) => {
                     </Typography>
                     <Typography
                         color="#282828"
-                        sx={{ fontWeight: 560, fontSize: '20px' }}
+                        sx={{fontWeight: 560, fontSize: '20px'}}
                     >
                         {formattedPrice}
                     </Typography>

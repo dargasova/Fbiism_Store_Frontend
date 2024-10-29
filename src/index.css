@@ -7,6 +7,7 @@ body {
     font-family: 'StyreneA', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    user-select: none;
 }
 
 code {
@@ -21,25 +22,29 @@ code {
     text-align: center;
 }
 
-/* Плавная анимация биения сердца с меньшим увеличением */
+img, svg {
+    user-drag: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
 @keyframes heartbeat {
     0% {
         transform: scale(1);
     }
     15% {
-        transform: scale(1.05); /* Первый более аккуратный удар */
+        transform: scale(1.05);
     }
     30% {
-        transform: scale(1); /* Возвращение после первого удара */
+        transform: scale(1);
     }
     45% {
-        transform: scale(1.08); /* Второй удар, чуть сильнее */
+        transform: scale(1.08);
     }
     60% {
-        transform: scale(1); /* Возвращение после второго удара */
+        transform: scale(1);
     }
     100% {
-        transform: scale(1); /* Пауза перед повтором анимации */
+        transform: scale(1);
     }
 }
-

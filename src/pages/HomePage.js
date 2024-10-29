@@ -1,4 +1,3 @@
-// HomePage.jsx
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button, Box, Divider, Grid, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -25,19 +24,19 @@ const HomePage = () => {
         navigate('/catalog');
     };
 
-    const checkScrollTop = () => {
-        if (!showScroll && window.pageYOffset > 300) {
-            setShowScroll(true);
-        } else if (showScroll && window.pageYOffset <= 300) {
-            setShowScroll(false);
-        }
-    };
-
     const scrollTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     useEffect(() => {
+        const checkScrollTop = () => {
+            if (!showScroll && window.pageYOffset > 300) {
+                setShowScroll(true);
+            } else if (showScroll && window.pageYOffset <= 300) {
+                setShowScroll(false);
+            }
+        };
+
         window.addEventListener('scroll', checkScrollTop);
         return () => {
             window.removeEventListener('scroll', checkScrollTop);
@@ -229,11 +228,11 @@ const HomePage = () => {
                                     fontSize: '20px',
                                     color: '#000000',
                                     lineHeight: '1.6',
+                                    marginBottom: '16px',
                                 }}
                             >
-                                Мы — команда людей, объединенных любовью к аналитике, знаниям и стилю. Наша миссия —
-                                предоставить студентам и выпускникам ФБИУКС уникальную возможность выразить свою
-                                приверженность факультету через стиль и комфорт.
+                                Мы — команда активных и неравнодушных людей, объединённых любовью к аналитике, знаниям и
+                                ФБИУКС.
                             </Typography>
                             <Typography
                                 variant="body1"
@@ -242,10 +241,13 @@ const HomePage = () => {
                                     fontSize: '20px',
                                     color: '#000000',
                                     lineHeight: '1.6',
+                                    marginBottom: '16px',
                                 }}
                             >
-                                Каждая наша деталь продумана до мельчайших нюансов. Мы стремимся к совершенству в каждом
-                                пошиве, ценя ваши высокие стандарты.
+                                Наша миссия — создать одежду, которая станет воплощением стиля, комфорта и чувства
+                                принадлежности к факультету для его студентов, выпускников и сотрудников. Каждая деталь
+                                мерча продумана так, чтобы отражать важные ценности ФБИУКС и подчеркивать уникальность нашего
+                                сообщества.
                             </Typography>
                             <Typography
                                 variant="body1"
@@ -254,10 +256,10 @@ const HomePage = () => {
                                     fontSize: '20px',
                                     color: '#000000',
                                     lineHeight: '1.6',
+                                    marginBottom: '16px',
                                 }}
                             >
-                                Присоединяйтесь к нам, чтобы делиться своей страстью к аналитике и вместе с нами
-                                воплощать идеи в реальность.
+                                Да, мы здесь действительно уповаем на аналитику!
                             </Typography>
                         </Box>
                     </Grid>
@@ -282,7 +284,7 @@ const HomePage = () => {
                                     top: '-160px',
                                     left: '490px',
                                     marginRight: '15px',
-                                    animation: 'heartbeat 1.5s ease-in-out infinite', // Исправлена CSS-анимация
+                                    animation: 'heartbeat 1.5s ease-in-out infinite',
                                 }}
                             />
                             <img
@@ -311,7 +313,6 @@ const HomePage = () => {
                             />
                         </Box>
                     </Grid>
-
                 </Grid>
             </Box>
 
@@ -375,7 +376,7 @@ const HomePage = () => {
                                 lineHeight: '1.8',
                             }}
                         >
-                            Мы предлагаем удобную и быструю доставку для наших клиентов:
+                            Мы предлагаем удобные варианты получения заказа:
                         </Typography>
                         <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                             <li
